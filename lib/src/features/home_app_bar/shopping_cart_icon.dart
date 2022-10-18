@@ -19,12 +19,13 @@ class ShoppingCartIcon extends StatelessWidget {
           child: IconButton(
             key: shoppingCartIconKey,
             icon: const Icon(Icons.shopping_cart),
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                fullscreenDialog: true,
-                builder: (_) => const ShoppingCartScreen(),
-              ),
-            ),
+            onPressed: () => Navigator.pushNamed(context, '/cart'),
+            // onPressed: () => Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     fullscreenDialog: true,
+            //     builder: (_) => const ShoppingCartScreen(),
+            //   ),
+            // ),
           ),
         ),
         if (cartItemsCount > 0)
