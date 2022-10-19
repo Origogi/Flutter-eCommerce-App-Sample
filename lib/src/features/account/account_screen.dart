@@ -19,7 +19,11 @@ class AccountScreen extends StatelessWidget {
         actions: [
           ActionTextButton(
             text: 'Logout'.hardcoded,
+
+
             onPressed: () async {
+              final router = GoRouter.of(context);
+
               final logout = await showAlertDialog(
                 context: context,
                 title: 'Are you sure?'.hardcoded,
@@ -28,7 +32,7 @@ class AccountScreen extends StatelessWidget {
               );
               if (logout == true) {
                 // TODO: Sign out the user.
-                context.pop();
+                router.pop();
               }
             },
           ),
