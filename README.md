@@ -1,9 +1,16 @@
 # Flutter eCommerce App
 
-아래 Fluuter 인강을 통해 이커머스 플러터 앱 샘플을 구현
+This is the official Flutter Project for this course:
 
 - [Complete Flutter Course Bundle](https://codewithandrea.com/courses/complete-flutter-bundle/)
 
-## Preview
+This will include a full-stack eCommerce app using Flutter & Firebase:
 
-![image](https://user-images.githubusercontent.com/35194820/196325209-86155a3e-458e-4391-8d18-d731b81def1b.png)
+![eCommerce App Preview](/.github/images/ecommerce-app-preview.png)
+
+A Flutter web preview of the app can be found here:
+
+- [Flutter Web Demo](https://my-shop-ecommerce-stg.web.app/)
+
+
+### [LICENSE: MIT](../LICENSE.md)
