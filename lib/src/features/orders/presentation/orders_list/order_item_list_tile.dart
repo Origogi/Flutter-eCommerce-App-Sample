@@ -5,16 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce_app/src/common_widgets/custom_image.dart';
 import 'package:ecommerce_app/src/constants/app_sizes.dart';
 import 'package:ecommerce_app/src/features/cart/domain/item.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// Shows an individual order item, including price and quantity.
-class OrderItemListTile extends StatelessWidget {
+class OrderItemListTile extends ConsumerWidget {
   const OrderItemListTile({super.key, required this.item});
   final Item item;
 
   @override
-  Widget build(BuildContext context) {
-    // TODO: Read from data source
-    final product = FakeProductsRepository.instance.getProduct(item.productId)!;
+  Widget build(BuildContext context, ref) {
+    final productsRepository = ref.watch(productRepositoryProvider);
+    final product = productsRepository.getProduct(item.productId)!;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: Sizes.p8),
       child: Row(
