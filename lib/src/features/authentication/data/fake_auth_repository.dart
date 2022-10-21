@@ -1,11 +1,16 @@
 import 'package:ecommerce_app/src/features/authentication/domain/app_user.dart';
+import 'package:ecommerce_app/src/utils/in_memory_store.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 abstract class AuthRepository {
   Stream<AppUser?> authStateChanges();
+
   AppUser? get currentUser;
+
   Future<void> signInWithEmailAndPassword(String email, String password);
+
   Future<void> createUserWithEmailAndPassword(String email, String password);
+
   Future<void> signOut();
 }
 
@@ -37,22 +42,35 @@ class FirebaseAuthRepository implements AuthRepository {
     // TODO: implement signOut
     throw UnimplementedError();
   }
-
 }
 
-class FakeAuthRepository implements AuthRepository{
-  Stream<AppUser?> authStateChange() => Stream.value(null);
+class FakeAuthRepository implements AuthRepository {
+  final _authState = InMemoryStore<AppUser?>(null);
+
+  Stream<AppUser?> authStateChange() => _authState.stream;
 
   @override
-  AppUser? get currentUser => null;
-
+  AppUser? get currentUser => _authState.value;
 
   @override
   Future<void> createUserWithEmailAndPassword(
-      String email, String password) async {}
+      String email, String password) async {
+    if (currentUser == null) {
+      _createUser(email);
+    }
+  }
 
   @override
-  Future<void> signOut() async {}
+  Future<void> signInWithEmailAndPassword(String email, String password) async {
+    if (currentUser == null) {
+      _createUser(email);
+    }
+  }
+
+  @override
+  Future<void> signOut() async {
+    _authState.value = null;
+  }
 
   @override
   Stream<AppUser?> authStateChanges() {
@@ -60,16 +78,26 @@ class FakeAuthRepository implements AuthRepository{
     throw UnimplementedError();
   }
 
-  @override
-  Future<void> signInWithEmailAndPassword(String email, String password) {
-    // TODO: implement signInWithEmilAndPassword
-    throw UnimplementedError();
+  void dispose() {
+    _authState.close();
+  }
+
+  void _createUser(String email) {
+    _authState.value =
+        AppUser(uid: email.split('').reversed.join(), email: email);
   }
 }
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  const isFake = String.fromEnvironment('useFakeRepos') == 'true';
-  return isFake ? FakeAuthRepository() : FirebaseAuthRepository();
+  final auth = FakeAuthRepository();
+
+  ref.onDispose(() {
+    auth.dispose();
+  });
+
+  return auth;
+  // const isFake = String.fromEnvironment('useFakeRepos') == 'true';
+  // return isFake ? FakeAuthRepository() : FirebaseAuthRepository();
 });
 
 final authStateChangesProvider = StreamProvider<AppUser?>((ref) {
