@@ -75,10 +75,8 @@ class FakeAuthRepository implements AuthRepository {
   }
 
   @override
-  Stream<AppUser?> authStateChanges() {
-    // TODO: implement authStateChanges
-    throw UnimplementedError();
-  }
+  Stream<AppUser?> authStateChanges() => _authState.stream;
+
 
   void dispose() {
     _authState.close();

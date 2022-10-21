@@ -5,8 +5,11 @@ import 'package:ecommerce_app/src/constants/app_sizes.dart';
 import 'package:ecommerce_app/src/features/authentication/domain/app_user.dart';
 import 'package:ecommerce_app/src/features/authentication/presentation/account_screen_controller.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
+import 'package:ecommerce_app/src/utils/async_value_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../../data/fake_auth_repository.dart';
 
 /// Simple account screen showing some user info and a logout button.
 class AccountScreen extends ConsumerWidget {
@@ -14,13 +17,8 @@ class AccountScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    ref.listen<AsyncValue<void>>(accountScreenControllerProvider,
-        (previous, next) async {
-      if (!next.isRefreshing && next.hasError)  {
-         await showExceptionAlertDialog(
-            context: context, title: 'Error'.hardcoded, exception: next.error);
-      }
-    });
+    ref.listen<AsyncValue>(accountScreenControllerProvider,
+        (previous, next) => next.showAlertDialogOnError(context));
 
     final state = ref.watch(accountScreenControllerProvider);
 
@@ -65,14 +63,13 @@ class AccountScreen extends ConsumerWidget {
 }
 
 /// Simple user data table showing the uid and email
-class UserDataTable extends StatelessWidget {
+class UserDataTable extends ConsumerWidget {
   const UserDataTable({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     final style = Theme.of(context).textTheme.subtitle2!;
-    // TODO: get user from auth repository
-    const user = AppUser(uid: '123', email: 'test@test.com');
+    final user = ref.watch(authStateChangesProvider).value;
     return DataTable(
       columns: [
         DataColumn(
@@ -91,12 +88,12 @@ class UserDataTable extends StatelessWidget {
       rows: [
         _makeDataRow(
           'uid'.hardcoded,
-          user.uid,
+          user?.uid ?? '',
           style,
         ),
         _makeDataRow(
           'email'.hardcoded,
-          user.email ?? '',
+          user?.email ?? '',
           style,
         ),
       ],
