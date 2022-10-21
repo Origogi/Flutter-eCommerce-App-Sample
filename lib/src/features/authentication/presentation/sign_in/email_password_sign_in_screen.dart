@@ -66,7 +66,7 @@ class _EmailPasswordSignInContentsState
   var _submitted = false;
   // local variable representing the form type and loading state
   late var _state =
-      EmailPasswordSignInState(formType: widget.formType, isLoading: false);
+      EmailPasswordSignInState(formType: widget.formType);
 
   @override
   void dispose() {
