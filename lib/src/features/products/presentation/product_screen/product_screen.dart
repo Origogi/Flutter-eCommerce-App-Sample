@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/src/common_widgets/custom_image.dart';
 import 'package:ecommerce_app/src/common_widgets/empty_placeholder_widget.dart';
+import 'package:ecommerce_app/src/common_widgets/error_message_widget.dart';
 import 'package:ecommerce_app/src/common_widgets/responsive_center.dart';
 import 'package:ecommerce_app/src/common_widgets/responsive_two_column_layout.dart';
 import 'package:ecommerce_app/src/constants/app_sizes.dart';
@@ -23,26 +24,32 @@ class ProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: const HomeAppBar(),
       body: Consumer(
         builder: (context, ref, _) {
-          final productsRepository = ref.watch(productRepositoryProvider);
-          final product = productsRepository.getProduct(productId);
-          return product == null
-              ? EmptyPlaceholderWidget(
-                  message: 'Product not found'.hardcoded,
-                )
-              : CustomScrollView(
-                  slivers: [
-                    ResponsiveSliverCenter(
-                      padding: const EdgeInsets.all(Sizes.p16),
-                      child: ProductDetails(product: product),
+          final productValue = ref.watch(productProvider(productId));
+
+          return productValue.when(
+              data: (product) => product == null
+                  ? EmptyPlaceholderWidget(
+                      message: 'Product not found'.hardcoded,
+                    )
+                  : CustomScrollView(
+                      slivers: [
+                        ResponsiveSliverCenter(
+                          padding: const EdgeInsets.all(Sizes.p16),
+                          child: ProductDetails(product: product),
+                        ),
+                        ProductReviewsList(productId: productId),
+                      ],
                     ),
-                    ProductReviewsList(productId: productId),
-                  ],
-                );
+              error: (error, st) => Center(
+                    child: ErrorMessageWidget(error.toString()),
+                  ),
+              loading: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ));
         },
       ),
     );

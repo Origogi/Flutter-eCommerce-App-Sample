@@ -18,7 +18,6 @@ class FakeProductsRepository {
   }
 
   Future<List<Product>> fetchProductsList() async {
-
     await Future.delayed(const Duration(seconds: 2));
     // throw Exception('connection failed');
     return Future.value(_products);
@@ -40,7 +39,6 @@ final productRepositoryProvider = Provider<FakeProductsRepository>((ref) {
   return FakeProductsRepository.instance;
 });
 
-
 final productListStreamProvider = StreamProvider<List<Product>>((ref) {
   final productRepository = ref.watch(productRepositoryProvider);
   return productRepository.watchProductList();
@@ -49,4 +47,9 @@ final productListStreamProvider = StreamProvider<List<Product>>((ref) {
 final productListFutureProvider = FutureProvider<List<Product>>((ref) async {
   final productRepository = ref.watch(productRepositoryProvider);
   return productRepository.fetchProductsList();
+});
+
+final productProvider = StreamProvider.family<Product?, String>((ref, id) {
+  final productRepository = ref.watch(productRepositoryProvider);
+  return productRepository.watchProduct(id);
 });
