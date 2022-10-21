@@ -26,7 +26,6 @@ enum AppRoute {
 }
 
 final goRouterProvider = Provider<GoRouter>((ref) {
-
   final authRepo = ref.watch(authRepositoryProvider);
   return GoRouter(
     initialLocation: '/',
@@ -83,14 +82,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             ),
             routes: [
               GoRoute(
-                path: 'checkout',
-                name: AppRoute.checkout.name,
-                pageBuilder: (context, state) => MaterialPage(
-                  key: state.pageKey,
-                  fullscreenDialog: true,
-                  child: const CheckoutScreen(),
-                ),
-              ),
+                  path: 'checkout',
+                  name: AppRoute.checkout.name,
+                  pageBuilder: (context, state) => MaterialPage(
+                        key: ValueKey(state.location),
+                        fullscreenDialog: true,
+                        child: const CheckoutScreen(),
+                      )),
             ],
           ),
           GoRoute(
