@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/src/common_widgets/async_value_widget.dart';
 import 'package:ecommerce_app/src/constants/test_products.dart';
 import 'package:ecommerce_app/src/features/products/data/fake_products_repository.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
@@ -14,33 +15,35 @@ class OrderItemListTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final productsRepository = ref.watch(productRepositoryProvider);
-    final product = productsRepository.getProduct(item.productId)!;
+    final productValue = ref.watch(productProvider(item.productId));
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: Sizes.p8),
-      child: Row(
-        children: [
-          Flexible(
-            flex: 1,
-            child: CustomImage(imageUrl: product.imageUrl),
-          ),
-          gapW8,
-          Flexible(
-            flex: 3,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(product.title),
-                gapH12,
-                Text(
-                  'Quantity: ${item.quantity}'.hardcoded,
-                  style: Theme.of(context).textTheme.caption,
-                ),
-              ],
+    return AsyncValueWidget(
+      value: productValue,
+      data: (product) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: Sizes.p8),
+        child: Row(
+          children: [
+            Flexible(
+              flex: 1,
+              child: CustomImage(imageUrl: product!.imageUrl),
             ),
-          ),
-        ],
+            gapW8,
+            Flexible(
+              flex: 3,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(product.title),
+                  gapH12,
+                  Text(
+                    'Quantity: ${item.quantity}'.hardcoded,
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,8 +1,9 @@
 import 'dart:math';
 
-import 'package:ecommerce_app/src/common_widgets/error_message_widget.dart';
+import 'package:ecommerce_app/src/common_widgets/async_value_widget.dart';
 import 'package:ecommerce_app/src/constants/app_sizes.dart';
 import 'package:ecommerce_app/src/features/products/data/fake_products_repository.dart';
+import 'package:ecommerce_app/src/features/products/domain/product.dart';
 import 'package:ecommerce_app/src/features/products/presentation/products_list/product_card.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
 import 'package:ecommerce_app/src/routing/app_router.dart';
@@ -19,30 +20,29 @@ class ProductsGrid extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final productListValue = ref.watch(productListFutureProvider);
 
-    return productListValue.when(
-        data: (products) => products.isEmpty
-            ? Center(
-                child: Text(
-                  'No products found'.hardcoded,
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-              )
-            : ProductsLayoutGrid(
-                itemCount: products.length,
-                itemBuilder: (_, index) {
-                  final product = products[index];
-                  return ProductCard(
-                    product: product,
-                    onPressed: () => context.goNamed(
-                      AppRoute.product.name,
-                      params: {'id': product.id},
-                    ),
-                  );
-                },
+    return AsyncValueWidget<List<Product>>(
+      value: productListValue,
+      data: (products) => products.isEmpty
+          ? Center(
+              child: Text(
+                'No products found'.hardcoded,
+                style: Theme.of(context).textTheme.headline4,
               ),
-        error: (error, st) =>
-            Center(child: ErrorMessageWidget(error.toString())),
-        loading: () => const Center(child: CircularProgressIndicator()));
+            )
+          : ProductsLayoutGrid(
+              itemCount: products.length,
+              itemBuilder: (_, index) {
+                final product = products[index];
+                return ProductCard(
+                  product: product,
+                  onPressed: () => context.goNamed(
+                    AppRoute.product.name,
+                    params: {'id': product.id},
+                  ),
+                );
+              },
+            ),
+    );
   }
 }
 
