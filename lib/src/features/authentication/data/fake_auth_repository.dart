@@ -55,6 +55,7 @@ class FakeAuthRepository implements AuthRepository {
   @override
   Future<void> createUserWithEmailAndPassword(
       String email, String password) async {
+    await Future.delayed(const Duration(seconds: 3));
     if (currentUser == null) {
       _createUser(email);
     }
@@ -62,6 +63,8 @@ class FakeAuthRepository implements AuthRepository {
 
   @override
   Future<void> signInWithEmailAndPassword(String email, String password) async {
+    await Future.delayed(const Duration(seconds: 3));
+
     if (currentUser == null) {
       _createUser(email);
     }
@@ -76,7 +79,6 @@ class FakeAuthRepository implements AuthRepository {
 
   @override
   Stream<AppUser?> authStateChanges() => _authState.stream;
-
 
   void dispose() {
     _authState.close();
