@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/src/features/authentication/domain/app_user.dart';
+import 'package:ecommerce_app/src/utils/delay.dart';
 import 'package:ecommerce_app/src/utils/in_memory_store.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -46,6 +47,9 @@ class FirebaseAuthRepository implements AuthRepository {
 
 class FakeAuthRepository implements AuthRepository {
   final _authState = InMemoryStore<AppUser?>(null);
+  final bool addDelay;
+
+  FakeAuthRepository({this.addDelay = false});
 
   Stream<AppUser?> authStateChange() => _authState.stream;
 
@@ -55,7 +59,7 @@ class FakeAuthRepository implements AuthRepository {
   @override
   Future<void> createUserWithEmailAndPassword(
       String email, String password) async {
-    await Future.delayed(const Duration(seconds: 3));
+    await delay(addDelay);
     if (currentUser == null) {
       _createUser(email);
     }
@@ -63,7 +67,7 @@ class FakeAuthRepository implements AuthRepository {
 
   @override
   Future<void> signInWithEmailAndPassword(String email, String password) async {
-    await Future.delayed(const Duration(seconds: 3));
+    await delay(addDelay);
 
     if (currentUser == null) {
       _createUser(email);
@@ -72,7 +76,7 @@ class FakeAuthRepository implements AuthRepository {
 
   @override
   Future<void> signOut() async {
-    await Future.delayed(const Duration(seconds: 3));
+    await delay(addDelay);
     // throw Exception('Connection failed');
     _authState.value = null;
   }
