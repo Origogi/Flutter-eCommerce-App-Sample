@@ -14,6 +14,11 @@ class Product {
     this.numRatings = 0,
   });
 
+  @override
+  String toString() {
+    return 'Product{id: $id, imageUrl: $imageUrl, title: $title, description: $description, price: $price, availableQuantity: $availableQuantity, avgRating: $avgRating, numRatings: $numRatings}';
+  }
+
   /// Unique product id
   final ProductID id;
   final String imageUrl;
