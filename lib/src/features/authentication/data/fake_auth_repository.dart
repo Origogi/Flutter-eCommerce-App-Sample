@@ -51,7 +51,6 @@ class FakeAuthRepository implements AuthRepository {
 
   FakeAuthRepository({this.addDelay = false});
 
-  Stream<AppUser?> authStateChange() => _authState.stream;
 
   @override
   AppUser? get currentUser => _authState.value;
