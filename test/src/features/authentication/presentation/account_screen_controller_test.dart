@@ -1,5 +1,4 @@
 import 'package:ecommerce_app/src/features/authentication/data/fake_auth_repository.dart';
-import 'package:ecommerce_app/src/features/authentication/domain/app_user.dart';
 import 'package:ecommerce_app/src/features/authentication/presentation/account_screen_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -24,12 +23,15 @@ void main() {
     when(authRepository.signOut).thenAnswer((_) => Future.value());
 
     final controller = AccountScreenController(authRepository: authRepository);
+    // expect later
+    expectLater(controller.stream,
+        emitsInOrder(const [AsyncLoading<void>(), AsyncData<void>(null)]));
     // run
     await controller.signOut();
     // verify
     verify(authRepository.signOut).called(1);
     expect(controller.debugState, const AsyncData<void>(null));
-  });
+  }, timeout: const Timeout(Duration(milliseconds: 500)));
 
   test('signOut failure', () async {
     // setup
@@ -38,6 +40,17 @@ void main() {
     when(authRepository.signOut).thenThrow(exception);
 
     final controller = AccountScreenController(authRepository: authRepository);
+
+    // expect later
+    expectLater(
+        controller.stream,
+        emitsInOrder([
+          const AsyncLoading<void>(),
+          predicate<AsyncValue<void>>((value) {
+            expect(value.hasError, true);
+            return true;
+          })
+        ]));
     // run
     await controller.signOut();
     // verify
