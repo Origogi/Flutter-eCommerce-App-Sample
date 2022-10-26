@@ -1,4 +1,4 @@
-import 'package:ecommerce_app/src/features/authentication/data/fake_auth_repository.dart';
+@Timeout(Duration(milliseconds: 300))
 import 'package:ecommerce_app/src/features/authentication/presentation/account_screen_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -35,7 +35,7 @@ void main() {
     // verify
     verify(authRepository.signOut).called(1);
     expect(controller.debugState, const AsyncData<void>(null));
-  }, timeout: const Timeout(Duration(milliseconds: 500)));
+  });
 
   test('signOut failure', () async {
     // setup

@@ -1,4 +1,4 @@
-import 'package:ecommerce_app/src/features/authentication/data/fake_auth_repository.dart';
+@Timeout(Duration(milliseconds: 300))
 import 'package:ecommerce_app/src/features/authentication/presentation/sign_in/email_password_sign_in_controller.dart';
 import 'package:ecommerce_app/src/features/authentication/presentation/sign_in/email_password_sign_in_state.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../mock.dart';
-
 
 void main() {
   const testEmail = 'test@test.com';
@@ -43,7 +42,7 @@ void main() {
 
       // verify
       expect(result, true);
-    }, timeout: const Timeout(Duration(milliseconds: 300)));
+    });
 
     test('''
      Given fromType is signIn
@@ -79,7 +78,7 @@ void main() {
 
       // verify
       expect(result, false);
-    }, timeout: const Timeout(Duration(milliseconds: 300)));
+    });
 
     test('''
      Given fromType is register
@@ -111,7 +110,7 @@ void main() {
 
       // verify
       expect(result, true);
-    }, timeout: const Timeout(Duration(milliseconds: 300)));
+    });
 
     test('''
      Given fromType is register
@@ -147,7 +146,7 @@ void main() {
 
       // verify
       expect(result, false);
-    }, timeout: const Timeout(Duration(milliseconds: 300)));
+    });
   });
 
   group('updateFormType', () {
