@@ -5,7 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockAuthRepository extends Mock implements FakeAuthRepository {}
+import '../../../../mock.dart';
+
 
 void main() {
   const testEmail = 'test@test.com';
@@ -79,7 +80,113 @@ void main() {
       // verify
       expect(result, false);
     }, timeout: const Timeout(Duration(milliseconds: 300)));
+
+    test('''
+     Given fromType is register
+     when createUserWithEmailAndPassword succeeds
+     Then return true
+    ''', () async {
+      // setup
+      final authRepository = MockAuthRepository();
+      when(() => authRepository.createUserWithEmailAndPassword(
+          testEmail, testPassword)).thenAnswer((_) => Future.value());
+      final controller = EmailPasswordSignInController(
+          formType: EmailPasswordSignInFormType.register,
+          authRepository: authRepository);
+
+      // expect later
+      expectLater(
+          controller.stream,
+          emitsInOrder([
+            EmailPasswordSignInState(
+                formType: EmailPasswordSignInFormType.register,
+                value: const AsyncLoading<void>()),
+            EmailPasswordSignInState(
+                formType: EmailPasswordSignInFormType.register,
+                value: const AsyncData<void>(null))
+          ]));
+
+      // run
+      final result = await controller.submit(testEmail, testPassword);
+
+      // verify
+      expect(result, true);
+    }, timeout: const Timeout(Duration(milliseconds: 300)));
+
+    test('''
+     Given fromType is register
+     when createUserWithEmailAndPassword fail
+     Then return false
+     And state is AsyncError
+    ''', () async {
+      // setup
+      final authRepository = MockAuthRepository();
+      final exception = Exception('Connection failed');
+      when(() => authRepository.createUserWithEmailAndPassword(
+          testEmail, testPassword)).thenThrow(exception);
+      final controller = EmailPasswordSignInController(
+          formType: EmailPasswordSignInFormType.register,
+          authRepository: authRepository);
+
+      // expect later
+      expectLater(
+          controller.stream,
+          emitsInOrder([
+            EmailPasswordSignInState(
+                formType: EmailPasswordSignInFormType.register,
+                value: const AsyncLoading<void>()),
+            predicate<EmailPasswordSignInState>((state) {
+              expect(state.formType, EmailPasswordSignInFormType.register);
+              expect(state.value.hasError, true);
+              return true;
+            })
+          ]));
+
+      // run
+      final result = await controller.submit(testEmail, testPassword);
+
+      // verify
+      expect(result, false);
+    }, timeout: const Timeout(Duration(milliseconds: 300)));
   });
 
-  group('updateFormType', () {});
+  group('updateFormType', () {
+    test('''
+    Given formType is signIn
+    when called with register
+    Then state.formType is register''', () {
+      // setup
+      final authRepository = MockAuthRepository();
+      final controller = EmailPasswordSignInController(
+          formType: EmailPasswordSignInFormType.signIn,
+          authRepository: authRepository);
+      // run
+      controller.updateFormType(EmailPasswordSignInFormType.register);
+
+      expect(
+          controller.debugState,
+          EmailPasswordSignInState(
+              formType: EmailPasswordSignInFormType.register,
+              value: const AsyncData<void>(null)));
+    });
+
+    test('''
+    Given formType is register
+    when called with signIn
+    Then state.formType is signIn''', () {
+      // setup
+      final authRepository = MockAuthRepository();
+      final controller = EmailPasswordSignInController(
+          formType: EmailPasswordSignInFormType.register,
+          authRepository: authRepository);
+      // run
+      controller.updateFormType(EmailPasswordSignInFormType.signIn);
+
+      expect(
+          controller.debugState,
+          EmailPasswordSignInState(
+              formType: EmailPasswordSignInFormType.signIn,
+              value: const AsyncData<void>(null)));
+    });
+  });
 }

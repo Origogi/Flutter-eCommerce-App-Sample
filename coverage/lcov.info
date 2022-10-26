@@ -52,8 +52,8 @@ DA:21,1
 DA:22,2
 DA:23,1
 DA:24,2
-DA:25,0
-DA:26,0
+DA:25,1
+DA:26,2
 DA:30,0
 DA:31,0
 DA:35,0
@@ -61,7 +61,7 @@ DA:38,0
 DA:39,0
 DA:40,0
 LF:19
-LH:11
+LH:13
 end_of_record
 SF:lib/src/features/authentication/presentation/sign_in/email_password_sign_in_state.dart
 DA:19,1
