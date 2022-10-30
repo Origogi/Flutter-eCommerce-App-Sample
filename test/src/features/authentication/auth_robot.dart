@@ -34,8 +34,19 @@ class AuthRobot {
     final primaryButton = find.byType(PrimaryButton);
     expect(primaryButton, findsOneWidget);
     await tester.tap(primaryButton);
-    await tester.pump();
+    // await tester.pump();
+  }
 
+  Future<void> enterEmail(String email) async {
+    final emailField = find.byKey(EmailPasswordSignInScreen.emailKey);
+    expect(emailField, findsOneWidget);
+    await tester.enterText(emailField, email);
+  }
+
+  Future<void> enterPassword(String email) async {
+    final passwordField = find.byKey(EmailPasswordSignInScreen.passwordKey);
+    expect(passwordField, findsOneWidget);
+    await tester.enterText(passwordField, email);
   }
 
   Future<void> pumpAccountScreen({FakeAuthRepository? authRepository}) async {
