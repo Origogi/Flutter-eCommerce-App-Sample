@@ -1,17 +1,22 @@
 import 'package:ecommerce_app/src/common_widgets/alert_dialogs.dart';
+import 'package:ecommerce_app/src/features/authentication/data/fake_auth_repository.dart';
 import 'package:ecommerce_app/src/features/authentication/presentation/account/account_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../../mock.dart';
 
 class AuthRobot {
   AuthRobot(this.tester);
 
   final WidgetTester tester;
 
-  Future<void> pumpAccountScreen() async {
-    await tester.pumpWidget(
-        const ProviderScope(child: MaterialApp(home: AccountScreen())));
+  Future<void> pumpAccountScreen({FakeAuthRepository? authRepository}) async {
+    await tester.pumpWidget(ProviderScope(overrides: [
+      if (authRepository != null)
+        authRepositoryProvider.overrideWithValue(authRepository)
+    ], child: const MaterialApp(home: AccountScreen())));
   }
 
   Future<void> tapLogoutButton() async {
@@ -24,7 +29,6 @@ class AuthRobot {
   void expectLogoutDialogFound() {
     final dialogTitle = find.text("Are you sure?");
     expect(dialogTitle, findsOneWidget);
-
   }
 
   Future<void> tapCancelButton() async {
@@ -38,7 +42,6 @@ class AuthRobot {
     final dialogTitle = find.text("Are you sure?");
 
     expect(dialogTitle, findsNothing);
-
   }
 
   Future<void> tapDialogLogoutButton() async {
@@ -47,4 +50,15 @@ class AuthRobot {
     await tester.tap(finder);
     await tester.pump();
   }
+
+  void expectErrorAlertFound() {
+    final finder = find.text('Error');
+    expect(finder, findsOneWidget);
+  }
+
+  void expectErrorAlertNotFound() {
+    final finder = find.text('Error');
+    expect(finder, findsNothing);
+  }
+
 }
