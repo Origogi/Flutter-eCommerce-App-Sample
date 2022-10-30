@@ -6,6 +6,7 @@ import 'package:ecommerce_app/src/features/authentication/presentation/sign_in/e
 import 'package:ecommerce_app/src/features/authentication/presentation/sign_in/email_password_sign_in_state.dart';
 import 'package:ecommerce_app/src/features/authentication/presentation/sign_in/string_validators.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
+import 'package:ecommerce_app/src/utils/async_value_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -120,7 +121,7 @@ class _EmailPasswordSignInContentsState
     ref.listen<AsyncValue>(
         emailPasswordSignInControllerProvider(widget.formType)
             .select((state) => state.value), (_, state) {
-      state.value.showAlertDialogOnError(context);
+      state.showAlertDialogOnError(context);
     });
 
     final state =
