@@ -61,4 +61,9 @@ class AuthRobot {
     expect(finder, findsNothing);
   }
 
+  void expectCircularProgressIndicator() {
+    final finder = find.byType(CircularProgressIndicator);
+    expect(finder, findsOneWidget);
+  }
+
 }
