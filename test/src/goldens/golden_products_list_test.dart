@@ -34,5 +34,7 @@ void main() {
     },
     // pass the variant 
     variant: sizeVariant,
+    tags: ['golden'],
+    skip: true
   );
 }
