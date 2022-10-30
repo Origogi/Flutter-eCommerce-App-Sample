@@ -8,12 +8,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'features/authentication/auth_robot.dart';
+import 'goldens/golden_robot.dart';
 
 class Robot {
   final WidgetTester tester;
   final AuthRobot auth;
+  final GoldenRobot golden;
 
-  Robot(this.tester) : auth = AuthRobot(tester);
+  Robot(this.tester)
+      : auth = AuthRobot(tester),
+        golden = GoldenRobot(tester);
 
   Future<void> pumpMyApp() async {
     final productRepository = FakeProductsRepository(addDelay: false);
