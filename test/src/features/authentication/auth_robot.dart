@@ -34,7 +34,7 @@ class AuthRobot {
     final primaryButton = find.byType(PrimaryButton);
     expect(primaryButton, findsOneWidget);
     await tester.tap(primaryButton);
-    // await tester.pump();
+    await tester.pump();
   }
 
   Future<void> enterEmail(String email) async {
