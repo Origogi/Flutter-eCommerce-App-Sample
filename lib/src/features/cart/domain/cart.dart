@@ -1,8 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 import 'package:ecommerce_app/src/features/cart/domain/item.dart';
 import 'package:ecommerce_app/src/features/products/domain/product.dart';
-import 'package:flutter/foundation.dart';
 
 /// Model class representing the shopping cart contents.
 class Cart {
@@ -21,7 +22,7 @@ class Cart {
 
   factory Cart.fromMap(Map<String, dynamic> map) {
     return Cart(
-      map['items'] as Map<ProductID, int>,
+      Map<ProductID, int>.from(map['items']),
     );
   }
 
