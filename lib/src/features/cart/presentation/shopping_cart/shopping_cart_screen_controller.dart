@@ -10,6 +10,7 @@ class ShoppingCartScreenController extends StateNotifier<AsyncValue<void>> {
 
   Future<void> updateItemQuantity(ProductID productId, int quantity) async {
     state = const AsyncLoading();
+    await Future.delayed(const Duration(seconds: 1));
     final updated = Item(productId: productId, quantity: quantity);
     state = await AsyncValue.guard(() => cartService.setItem(updated));
   }
