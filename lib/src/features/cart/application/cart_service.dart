@@ -4,6 +4,7 @@ import 'package:ecommerce_app/src/features/cart/data/remote/remote_cart_reposito
 import 'package:ecommerce_app/src/features/cart/domain/cart.dart';
 import 'package:ecommerce_app/src/features/cart/domain/item.dart';
 import 'package:ecommerce_app/src/features/cart/domain/mutable_cart.dart';
+import 'package:ecommerce_app/src/features/products/data/fake_products_repository.dart';
 import 'package:ecommerce_app/src/features/products/domain/product.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -63,7 +64,22 @@ final cartProvider = StreamProvider<Cart>((ref) {
 });
 
 final cartItemCountProvider = Provider<int>((ref) {
-  return ref.watch(cartProvider).maybeWhen(
-      data: (cart) => cart.items.values.length,
-      orElse: () => 0);
+  return ref
+      .watch(cartProvider)
+      .maybeWhen(data: (cart) => cart.items.values.length, orElse: () => 0);
+});
+
+final cartTotalProvider = Provider.autoDispose<double>((ref) {
+  final cart = ref.watch(cartProvider).value ?? const Cart();
+  final productList = ref.watch(productListStreamProvider).value ?? [];
+
+  if (cart.items.isNotEmpty && productList.isNotEmpty) {
+    return cart.items.entries.map((item) {
+      final product =
+          productList.firstWhere((product) => product.id == item.key);
+      return product.price * item.value;
+    }).reduce((value, itemPrice) => value + itemPrice);
+  } else {
+    return 0.0;
+  }
 });
