@@ -47,14 +47,14 @@ void main() {
       when(localCartRepository.fetchCart)
           .thenAnswer((_) => Future.value(const Cart()));
       when(() => localCartRepository.setCart(expectedCart)).thenAnswer(
-            (_) => Future.value(),
+        (_) => Future.value(),
       );
       final cartService = makeCartService();
       // run
       await cartService.setItem(const Item(productId: '123', quantity: 1));
       // verify
       verify(
-            () => localCartRepository.setCart(expectedCart),
+        () => localCartRepository.setCart(expectedCart),
       ).called(1);
       verifyNever(() => remoteCartRepository.setCart(any(), any()));
     });
@@ -68,14 +68,14 @@ void main() {
           .thenAnswer((_) => Future.value(const Cart()));
       when(() => remoteCartRepository.setCart(testUser.uid, expectedCart))
           .thenAnswer(
-            (_) => Future.value(),
+        (_) => Future.value(),
       );
       final cartService = makeCartService();
       // run
       await cartService.setItem(const Item(productId: '123', quantity: 1));
       // verify
       verify(
-            () => remoteCartRepository.setCart(testUser.uid, expectedCart),
+        () => remoteCartRepository.setCart(testUser.uid, expectedCart),
       ).called(1);
       verifyNever(() => localCartRepository.setCart(any()));
     });
@@ -126,12 +126,43 @@ void main() {
       final total = container.read(cartTotalProvider);
 
       final product =
-      kTestProducts.firstWhere((element) => element.id == productId);
+          kTestProducts.firstWhere((element) => element.id == productId);
 
       final expectResult = product.price * quantity;
 
       expect(total, expectResult);
     });
-  });
 
+    test('two Product', () async {
+      const cart = Cart({'1': 5, '2': 1});
+
+      final container = makeProviderContainer(
+          cart: Stream.value(cart), products: Stream.value(kTestProducts));
+
+      await container.read(cartProvider.future);
+      await container.read(productListStreamProvider.future);
+
+      final total = container.read(cartTotalProvider);
+
+      final expectResult = cart.items.entries.map((e) {
+        final product =
+            kTestProducts.firstWhere((product) => product.id == e.key);
+        return product.price * e.value;
+      }).reduce((acc, value) => acc + value);
+
+      expect(total, expectResult);
+    });
+
+    test('product not found', () async {
+      const cart = Cart({'1': 5, '100': 1});
+
+      final container = makeProviderContainer(
+          cart: Stream.value(cart), products: Stream.value(kTestProducts));
+
+      await container.read(cartProvider.future);
+      await container.read(productListStreamProvider.future);
+
+      expect(() => container.read(cartTotalProvider), throwsStateError);
+    });
+  });
 }
