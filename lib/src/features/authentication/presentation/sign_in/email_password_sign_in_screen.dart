@@ -1,7 +1,3 @@
-import 'package:ecommerce_app/src/common_widgets/custom_text_button.dart';
-import 'package:ecommerce_app/src/common_widgets/primary_button.dart';
-import 'package:ecommerce_app/src/common_widgets/responsive_scrollable_card.dart';
-import 'package:ecommerce_app/src/constants/app_sizes.dart';
 import 'package:ecommerce_app/src/features/authentication/presentation/sign_in/email_password_sign_in_controller.dart';
 import 'package:ecommerce_app/src/features/authentication/presentation/sign_in/email_password_sign_in_state.dart';
 import 'package:ecommerce_app/src/features/authentication/presentation/sign_in/string_validators.dart';
@@ -9,14 +5,17 @@ import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
 import 'package:ecommerce_app/src/utils/async_value_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ecommerce_app/src/common_widgets/custom_text_button.dart';
+import 'package:ecommerce_app/src/common_widgets/primary_button.dart';
+import 'package:ecommerce_app/src/common_widgets/responsive_scrollable_card.dart';
+import 'package:ecommerce_app/src/constants/app_sizes.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Email & password sign in screen.
 /// Wraps the [EmailPasswordSignInContents] widget below with a [Scaffold] and
 /// [AppBar] with a title.
 class EmailPasswordSignInScreen extends StatelessWidget {
   const EmailPasswordSignInScreen({super.key, required this.formType});
-
   final EmailPasswordSignInFormType formType;
 
   // * Keys for testing using find.byKey()
@@ -43,12 +42,10 @@ class EmailPasswordSignInContents extends ConsumerStatefulWidget {
     this.onSignedIn,
     required this.formType,
   });
-
   final VoidCallback? onSignedIn;
 
   /// The default form type to use.
   final EmailPasswordSignInFormType formType;
-
   @override
   ConsumerState<EmailPasswordSignInContents> createState() =>
       _EmailPasswordSignInContentsState();
@@ -62,7 +59,6 @@ class _EmailPasswordSignInContentsState
   final _passwordController = TextEditingController();
 
   String get email => _emailController.text;
-
   String get password => _passwordController.text;
 
   // local variable used to apply AutovalidateMode.onUserInteraction and show
@@ -87,7 +83,6 @@ class _EmailPasswordSignInContentsState
       final controller = ref.read(
           emailPasswordSignInControllerProvider(widget.formType).notifier);
       final success = await controller.submit(email, password);
-
       if (success) {
         widget.onSignedIn?.call();
       }
@@ -109,24 +104,23 @@ class _EmailPasswordSignInContentsState
   }
 
   void _updateFormType(EmailPasswordSignInFormType formType) {
-    final controller = ref
-        .read(emailPasswordSignInControllerProvider(widget.formType).notifier);
-
-    controller.updateFormType(formType);
+    // * Toggle between register and sign in form
+    ref
+        .read(emailPasswordSignInControllerProvider(widget.formType).notifier)
+        .updateFormType(formType);
+    // * Clear the password field when doing so
     _passwordController.clear();
   }
 
   @override
   Widget build(BuildContext context) {
     ref.listen<AsyncValue>(
-        emailPasswordSignInControllerProvider(widget.formType)
-            .select((state) => state.value), (_, state) {
-      state.showAlertDialogOnError(context);
-    });
-
+      emailPasswordSignInControllerProvider(widget.formType)
+          .select((state) => state.value),
+      (_, state) => state.showAlertDialogOnError(context),
+    );
     final state =
         ref.watch(emailPasswordSignInControllerProvider(widget.formType));
-
     return ResponsiveScrollableCard(
       child: FocusScope(
         node: _node,

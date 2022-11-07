@@ -13,10 +13,10 @@ class AddToCartController extends StateNotifier<AsyncValue<int>> {
 
   Future<void> addItem(ProductID productId) async {
     final item = Item(productId: productId, quantity: state.value!);
-    state =  const AsyncLoading<int>().copyWithPrevious(state);
+    state = const AsyncLoading();
     final value = await AsyncValue.guard(() => cartService.addItem(item));
     if (value.hasError) {
-      state = AsyncError(value.error!, value.stackTrace!);
+      state = AsyncError(value.error!);
     } else {
       state = const AsyncData(1);
     }

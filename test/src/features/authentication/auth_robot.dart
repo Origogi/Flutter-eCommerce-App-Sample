@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/src/common_widgets/alert_dialogs.dart';
+import 'package:ecommerce_app/src/common_widgets/custom_text_button.dart';
 import 'package:ecommerce_app/src/common_widgets/primary_button.dart';
 import 'package:ecommerce_app/src/features/authentication/data/fake_auth_repository.dart';
 import 'package:ecommerce_app/src/features/authentication/presentation/account/account_screen.dart';
@@ -6,37 +7,40 @@ import 'package:ecommerce_app/src/features/authentication/presentation/sign_in/e
 import 'package:ecommerce_app/src/features/authentication/presentation/sign_in/email_password_sign_in_state.dart';
 import 'package:ecommerce_app/src/features/products/presentation/home_app_bar/more_menu_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import '../../mock.dart';
 
 class AuthRobot {
   AuthRobot(this.tester);
-
   final WidgetTester tester;
 
   Future<void> openEmailPasswordSignInScreen() async {
     final finder = find.byKey(MoreMenuButton.signInKey);
     expect(finder, findsOneWidget);
-
     await tester.tap(finder);
     await tester.pumpAndSettle();
   }
 
-  Future<void> pumpEmailPasswordSignInContents(
-      {required FakeAuthRepository authRepository,
-      required EmailPasswordSignInFormType formType,
-      VoidCallback? onSignedIn}) {
-    return tester.pumpWidget(ProviderScope(
-        overrides: [authRepositoryProvider.overrideWithValue(authRepository)],
+  Future<void> pumpEmailPasswordSignInContents({
+    required FakeAuthRepository authRepository,
+    required EmailPasswordSignInFormType formType,
+    VoidCallback? onSignedIn,
+  }) {
+    return tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          authRepositoryProvider.overrideWithValue(authRepository),
+        ],
         child: MaterialApp(
-            home: Scaffold(
-          body: EmailPasswordSignInContents(
-            formType: formType,
-            onSignedIn: onSignedIn,
+          home: Scaffold(
+            body: EmailPasswordSignInContents(
+              formType: formType,
+              onSignedIn: onSignedIn,
+            ),
           ),
-        ))));
+        ),
+      ),
+    );
   }
 
   Future<void> tapEmailAndPasswordSubmitButton() async {
@@ -46,16 +50,33 @@ class AuthRobot {
     await tester.pumpAndSettle();
   }
 
+  Future<void> tapFormToggleButton() async {
+    final toggleButton = find.byType(CustomTextButton);
+    expect(toggleButton, findsOneWidget);
+    await tester.tap(toggleButton);
+    await tester.pumpAndSettle();
+  }
+
   Future<void> enterEmail(String email) async {
     final emailField = find.byKey(EmailPasswordSignInScreen.emailKey);
     expect(emailField, findsOneWidget);
     await tester.enterText(emailField, email);
   }
 
-  Future<void> enterPassword(String email) async {
+  Future<void> enterPassword(String password) async {
     final passwordField = find.byKey(EmailPasswordSignInScreen.passwordKey);
     expect(passwordField, findsOneWidget);
-    await tester.enterText(passwordField, email);
+    await tester.enterText(passwordField, password);
+  }
+
+  void expectCreateAccountButtonFound() {
+    final dialogTitle = find.text('Create an account');
+    expect(dialogTitle, findsOneWidget);
+  }
+
+  void expectCreateAccountButtonNotFound() {
+    final dialogTitle = find.text('Create an account');
+    expect(dialogTitle, findsNothing);
   }
 
   Future<void> signInWithEmailAndPassword() async {
@@ -69,25 +90,33 @@ class AuthRobot {
     expect(finder, findsOneWidget);
     await tester.tap(finder);
     await tester.pumpAndSettle();
-
   }
 
   Future<void> pumpAccountScreen({FakeAuthRepository? authRepository}) async {
-    await tester.pumpWidget(ProviderScope(overrides: [
-      if (authRepository != null)
-        authRepositoryProvider.overrideWithValue(authRepository)
-    ], child: const MaterialApp(home: AccountScreen())));
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          if (authRepository != null)
+            authRepositoryProvider.overrideWithValue(
+              authRepository,
+            )
+        ],
+        child: const MaterialApp(
+          home: AccountScreen(),
+        ),
+      ),
+    );
   }
 
   Future<void> tapLogoutButton() async {
-    final finder = find.text('Logout');
-    expect(finder, findsOneWidget);
-    await tester.tap(finder);
+    final logoutButton = find.text('Logout');
+    expect(logoutButton, findsOneWidget);
+    await tester.tap(logoutButton);
     await tester.pump();
   }
 
   void expectLogoutDialogFound() {
-    final dialogTitle = find.text("Are you sure?");
+    final dialogTitle = find.text('Are you sure?');
     expect(dialogTitle, findsOneWidget);
   }
 
@@ -99,15 +128,14 @@ class AuthRobot {
   }
 
   void expectLogoutDialogNotFound() {
-    final dialogTitle = find.text("Are you sure?");
-
+    final dialogTitle = find.text('Are you sure?');
     expect(dialogTitle, findsNothing);
   }
 
   Future<void> tapDialogLogoutButton() async {
-    final finder = find.byKey(kDialogDefaultKey);
-    expect(finder, findsOneWidget);
-    await tester.tap(finder);
+    final logoutButton = find.byKey(kDialogDefaultKey);
+    expect(logoutButton, findsOneWidget);
+    await tester.tap(logoutButton);
     await tester.pump();
   }
 

@@ -11,8 +11,8 @@ import 'package:ecommerce_app/src/features/reviews/presentation/leave_review_scr
 import 'package:ecommerce_app/src/routing/go_router_refresh_stream.dart';
 import 'package:ecommerce_app/src/routing/not_found_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 enum AppRoute {
   home,
@@ -26,12 +26,12 @@ enum AppRoute {
 }
 
 final goRouterProvider = Provider<GoRouter>((ref) {
-  final authRepo = ref.watch(authRepositoryProvider);
+  final authRepository = ref.watch(authRepositoryProvider);
   return GoRouter(
     initialLocation: '/',
     debugLogDiagnostics: false,
     redirect: (context, state) {
-      final isLoggedIn = authRepo.currentUser != null;
+      final isLoggedIn = authRepository.currentUser != null;
       if (isLoggedIn) {
         if (state.location == '/signIn') {
           return '/';
@@ -43,7 +43,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       }
       return null;
     },
-    refreshListenable: GoRouterRefreshStream(authRepo.authStateChanges()),
+    refreshListenable: GoRouterRefreshStream(authRepository.authStateChanges()),
     routes: [
       GoRoute(
         path: '/',
@@ -82,13 +82,14 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             ),
             routes: [
               GoRoute(
-                  path: 'checkout',
-                  name: AppRoute.checkout.name,
-                  pageBuilder: (context, state) => MaterialPage(
-                        key: ValueKey(state.location),
-                        fullscreenDialog: true,
-                        child: const CheckoutScreen(),
-                      )),
+                path: 'checkout',
+                name: AppRoute.checkout.name,
+                pageBuilder: (context, state) => MaterialPage(
+                  key: ValueKey(state.location),
+                  fullscreenDialog: true,
+                  child: const CheckoutScreen(),
+                ),
+              ),
             ],
           ),
           GoRoute(

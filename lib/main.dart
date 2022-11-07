@@ -6,8 +6,8 @@ import 'package:ecommerce_app/src/features/cart/data/local/local_cart_repository
 import 'package:ecommerce_app/src/features/cart/data/local/sembast_cart_repository.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() async {
   // * For more info on error handling, see:
@@ -15,18 +15,21 @@ void main() async {
   await runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
     // turn off the # in the URLs on the web
-    // * Entry point of the app
     GoRouter.setUrlPathStrategy(UrlPathStrategy.path);
     final localCartRepository = await SembastCartRepository.makeDefault();
-
-    final container = ProviderContainer(overrides: [
-      localCartRepositoryProvider.overrideWithValue(localCartRepository)
-    ]);
-    // Initialize CartSyncService to start the listener
+    // * Create ProviderContainer with any required overrides
+    final container = ProviderContainer(
+      overrides: [
+        localCartRepositoryProvider.overrideWithValue(localCartRepository),
+      ],
+    );
+    // * Initialize CartSyncService to start the listener
     container.read(cartSyncServiceProvider);
-
-    runApp(
-        UncontrolledProviderScope(container: container, child: const MyApp()));
+    // * Entry point of the app
+    runApp(UncontrolledProviderScope(
+      container: container,
+      child: const MyApp(),
+    ));
 
     // * This code will present some error UI if any uncaught exception happens
     FlutterError.onError = (FlutterErrorDetails details) {

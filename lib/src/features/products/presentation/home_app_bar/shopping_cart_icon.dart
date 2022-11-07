@@ -2,8 +2,8 @@ import 'package:ecommerce_app/src/features/cart/application/cart_service.dart';
 import 'package:ecommerce_app/src/routing/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/src/constants/app_sizes.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// Shopping cart icon with items count badge
 class ShoppingCartIcon extends ConsumerWidget {
@@ -13,8 +13,8 @@ class ShoppingCartIcon extends ConsumerWidget {
   static const shoppingCartIconKey = Key('shopping-cart');
 
   @override
-  Widget build(BuildContext context, ref) {
-    final cartItemValue = ref.watch(cartItemCountProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cartItemsCount = ref.watch(cartItemsCountProvider);
     return Stack(
       children: [
         Center(
@@ -24,11 +24,11 @@ class ShoppingCartIcon extends ConsumerWidget {
             onPressed: () => context.pushNamed(AppRoute.cart.name),
           ),
         ),
-        if (cartItemValue > 0)
+        if (cartItemsCount > 0)
           Positioned(
             top: Sizes.p4,
             right: Sizes.p4,
-            child: ShoppingCartIconBadge(itemsCount: cartItemValue),
+            child: ShoppingCartIconBadge(itemsCount: cartItemsCount),
           ),
       ],
     );
@@ -38,7 +38,6 @@ class ShoppingCartIcon extends ConsumerWidget {
 /// Icon badge showing the items count
 class ShoppingCartIconBadge extends StatelessWidget {
   const ShoppingCartIconBadge({super.key, required this.itemsCount});
-
   final int itemsCount;
 
   @override

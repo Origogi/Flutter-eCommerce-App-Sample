@@ -19,7 +19,7 @@ extension MutableCart on Cart {
     copy.update(
       item.productId,
       // if there is already a value, update it by adding the item quantity
-          (value) => item.quantity + value,
+      (value) => item.quantity + value,
       // otherwise, add the item with the given quantity
       ifAbsent: () => item.quantity,
     );
@@ -34,7 +34,7 @@ extension MutableCart on Cart {
       copy.update(
         item.productId,
         // if there is already a value, update it by adding the item quantity
-            (value) => item.quantity + value,
+        (value) => item.quantity + value,
         // otherwise, add the item with the given quantity
         ifAbsent: () => item.quantity,
       );

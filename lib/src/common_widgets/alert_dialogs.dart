@@ -18,6 +18,7 @@ Future<bool?> showAlertDialog({
   if (kIsWeb || !Platform.isIOS) {
     return showDialog(
       context: context,
+      barrierDismissible: cancelActionText != null,
       builder: (context) => AlertDialog(
         title: Text(title),
         content: content != null ? Text(content) : null,
@@ -38,6 +39,7 @@ Future<bool?> showAlertDialog({
   }
   return showCupertinoDialog(
     context: context,
+    barrierDismissible: cancelActionText != null,
     builder: (context) => CupertinoAlertDialog(
       title: Text(title),
       content: content != null ? Text(content) : null,

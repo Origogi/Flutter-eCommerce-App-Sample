@@ -1,11 +1,10 @@
 import 'dart:math';
 
-import 'package:ecommerce_app/src/common_widgets/alert_dialogs.dart';
 import 'package:ecommerce_app/src/common_widgets/async_value_widget.dart';
-import 'package:ecommerce_app/src/features/cart/application/cart_service.dart';
 import 'package:ecommerce_app/src/features/cart/presentation/shopping_cart/shopping_cart_screen_controller.dart';
 import 'package:ecommerce_app/src/features/products/data/fake_products_repository.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
+import 'package:ecommerce_app/src/utils/currency_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/src/common_widgets/custom_image.dart';
 import 'package:ecommerce_app/src/common_widgets/item_quantity_selector.dart';
@@ -13,8 +12,7 @@ import 'package:ecommerce_app/src/common_widgets/responsive_two_column_layout.da
 import 'package:ecommerce_app/src/constants/app_sizes.dart';
 import 'package:ecommerce_app/src/features/cart/domain/item.dart';
 import 'package:ecommerce_app/src/features/products/domain/product.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Shows a shopping cart item (or loading/error UI if needed)
 class ShoppingCartItem extends ConsumerWidget {
@@ -24,7 +22,6 @@ class ShoppingCartItem extends ConsumerWidget {
     required this.itemIndex,
     this.isEditable = true,
   });
-
   final Item item;
   final int itemIndex;
 
@@ -34,9 +31,9 @@ class ShoppingCartItem extends ConsumerWidget {
   final bool isEditable;
 
   @override
-  Widget build(BuildContext context, ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final productValue = ref.watch(productProvider(item.productId));
-    return AsyncValueWidget(
+    return AsyncValueWidget<Product?>(
       value: productValue,
       data: (product) => Padding(
         padding: const EdgeInsets.symmetric(vertical: Sizes.p8),
@@ -57,7 +54,7 @@ class ShoppingCartItem extends ConsumerWidget {
 }
 
 /// Shows a shopping cart item for a given product
-class ShoppingCartItemContents extends StatelessWidget {
+class ShoppingCartItemContents extends ConsumerWidget {
   const ShoppingCartItemContents({
     super.key,
     required this.product,
@@ -65,17 +62,18 @@ class ShoppingCartItemContents extends StatelessWidget {
     required this.itemIndex,
     required this.isEditable,
   });
-
   final Product product;
   final Item item;
   final int itemIndex;
   final bool isEditable;
 
+  // * Keys for testing using find.byKey()
+  static Key deleteKey(int index) => Key('delete-$index');
+
   @override
-  Widget build(BuildContext context) {
-    // TODO: error handling
-    // TODO: Inject formatter
-    final priceFormatted = NumberFormat.simpleCurrency().format(product.price);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final priceFormatted =
+        ref.watch(currencyFormatterProvider).format(product.price);
     return ResponsiveTwoColumnLayout(
       startFlex: 1,
       endFlex: 2,
@@ -92,7 +90,10 @@ class ShoppingCartItemContents extends StatelessWidget {
           isEditable
               // show the quantity selector and a delete button
               ? EditOrRemoveItemWidget(
-                  product: product, item: item, itemIndex: itemIndex)
+                  product: product,
+                  item: item,
+                  itemIndex: itemIndex,
+                )
               // else, show the quantity as a read-only label
               : Padding(
                   padding: const EdgeInsets.symmetric(vertical: Sizes.p8),
@@ -106,13 +107,14 @@ class ShoppingCartItemContents extends StatelessWidget {
   }
 }
 
+// custom widget to show the quantity selector and a delete button
 class EditOrRemoveItemWidget extends ConsumerWidget {
-  const EditOrRemoveItemWidget(
-      {super.key,
-      required this.product,
-      required this.item,
-      required this.itemIndex});
-
+  const EditOrRemoveItemWidget({
+    super.key,
+    required this.product,
+    required this.item,
+    required this.itemIndex,
+  });
   final Product product;
   final Item item;
   final int itemIndex;
@@ -134,16 +136,16 @@ class EditOrRemoveItemWidget extends ConsumerWidget {
               ? null
               : (quantity) => ref
                   .read(shoppingCartScreenControllerProvider.notifier)
-                  .updateItemQuantity(product.id, quantity),
+                  .updateItemQuantity(item.productId, quantity),
         ),
         IconButton(
           key: deleteKey(itemIndex),
           icon: Icon(Icons.delete, color: Colors.red[700]),
-          onPressed: () => state.isLoading
+          onPressed: state.isLoading
               ? null
-              : ref
+              : () => ref
                   .read(shoppingCartScreenControllerProvider.notifier)
-                  .removeItemById(product.id),
+                  .removeItemById(item.productId),
         ),
         const Spacer(),
       ],

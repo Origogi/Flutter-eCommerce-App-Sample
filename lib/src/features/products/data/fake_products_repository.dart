@@ -1,15 +1,12 @@
-import 'dart:async';
-
 import 'package:ecommerce_app/src/constants/test_products.dart';
 import 'package:ecommerce_app/src/features/products/domain/product.dart';
 import 'package:ecommerce_app/src/utils/delay.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FakeProductsRepository {
   FakeProductsRepository({this.addDelay = true});
-
-  final _products = kTestProducts;
   final bool addDelay;
+  final List<Product> _products = kTestProducts;
 
   List<Product> getProductsList() {
     return _products;
@@ -18,7 +15,21 @@ class FakeProductsRepository {
   Product? getProduct(String id) {
     return _getProduct(_products, id);
   }
-  
+
+  Future<List<Product>> fetchProductsList() async {
+    await delay(addDelay);
+    return Future.value(_products);
+  }
+
+  Stream<List<Product>> watchProductsList() async* {
+    await delay(addDelay);
+    yield _products;
+  }
+
+  Stream<Product?> watchProduct(String id) {
+    return watchProductsList().map((products) => _getProduct(products, id));
+  }
+
   static Product? _getProduct(List<Product> products, String id) {
     try {
       return products.firstWhere((product) => product.id == id);
@@ -26,49 +37,27 @@ class FakeProductsRepository {
       return null;
     }
   }
-
-  Future<List<Product>> fetchProductsList() async {
-    await delay(addDelay);
-
-    return Future.value(_products);
-  }
-
-  Stream<List<Product>> watchProductList() async* {
-    await delay(addDelay);
-
-    yield _products;
-  }
-
-  Stream<Product?> watchProduct(String id) {
-    return watchProductList()
-        .map((products) => _getProduct(products, id));
-  }
 }
 
-final productRepositoryProvider = Provider<FakeProductsRepository>((ref) {
-  return FakeProductsRepository();
+final productsRepositoryProvider = Provider<FakeProductsRepository>((ref) {
+  // * Set addDelay to false for faster loading
+  return FakeProductsRepository(addDelay: false);
 });
 
-final productListStreamProvider =
+final productsListStreamProvider =
     StreamProvider.autoDispose<List<Product>>((ref) {
-  final productRepository = ref.watch(productRepositoryProvider);
-  return productRepository.watchProductList();
+  final productsRepository = ref.watch(productsRepositoryProvider);
+  return productsRepository.watchProductsList();
 });
 
-final productListFutureProvider =
-    FutureProvider.autoDispose<List<Product>>((ref) async {
-  final productRepository = ref.watch(productRepositoryProvider);
-  return productRepository.fetchProductsList();
+final productsListFutureProvider =
+    FutureProvider.autoDispose<List<Product>>((ref) {
+  final productsRepository = ref.watch(productsRepositoryProvider);
+  return productsRepository.fetchProductsList();
 });
 
 final productProvider =
     StreamProvider.autoDispose.family<Product?, String>((ref, id) {
-  final link = ref.keepAlive();
-
-  Timer(const Duration(seconds: 10), () {
-    link.close();
-  });
-
-  final productRepository = ref.watch(productRepositoryProvider);
-  return productRepository.watchProduct(id);
+  final productsRepository = ref.watch(productsRepositoryProvider);
+  return productsRepository.watchProduct(id);
 });

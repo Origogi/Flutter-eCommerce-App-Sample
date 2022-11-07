@@ -1,6 +1,7 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:ecommerce_app/src/features/authentication/presentation/sign_in/string_validators.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// Form type for email & password authentication
 enum EmailPasswordSignInFormType { signIn, register }
@@ -26,22 +27,6 @@ class EmailPasswordSignInState with EmailAndPasswordValidators {
 
   bool get isLoading => value.isLoading;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is EmailPasswordSignInState &&
-          runtimeType == other.runtimeType &&
-          formType == other.formType &&
-          isLoading == other.isLoading;
-
-  @override
-  int get hashCode => formType.hashCode ^ isLoading.hashCode;
-
-  @override
-  String toString() {
-    return 'EmailPasswordSignInState{formType: $formType, isLoading: $isLoading}';
-  }
-
   EmailPasswordSignInState copyWith({
     EmailPasswordSignInFormType? formType,
     AsyncValue<void>? value,
@@ -51,6 +36,22 @@ class EmailPasswordSignInState with EmailAndPasswordValidators {
       value: value ?? this.value,
     );
   }
+
+  @override
+  String toString() =>
+      'EmailPasswordSignInState(formType: $formType, value: $value)';
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is EmailPasswordSignInState &&
+        other.formType == formType &&
+        other.value == value;
+  }
+
+  @override
+  int get hashCode => formType.hashCode ^ value.hashCode;
 }
 
 extension EmailPasswordSignInStateX on EmailPasswordSignInState {

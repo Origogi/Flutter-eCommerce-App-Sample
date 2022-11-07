@@ -8,7 +8,7 @@ class GoRouterRefreshStream extends ChangeNotifier {
     notifyListeners();
     _subscription = stream.asBroadcastStream().listen(
           (dynamic _) => notifyListeners(),
-    );
+        );
   }
 
   late final StreamSubscription<dynamic> _subscription;
