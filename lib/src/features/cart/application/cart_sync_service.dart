@@ -50,25 +50,28 @@ class CartSyncService {
 
   Future<List<Item>> _getLocalItemsToAdd(
       Cart localCart, Cart remoteCart) async {
+    // Get the list of products (needed to read the available quantities)
     final productRepository = ref.read(productRepositoryProvider);
     final products = await productRepository.fetchProductsList();
+    // Figure out which items need to be added
     final localItemsToAdd = <Item>[];
-
     for (final localItem in localCart.items.entries) {
       final productId = localItem.key;
       final localQuantity = localItem.value;
-
+      // get the quantity for the corresponding item in the remote cart
       final remoteQuantity = remoteCart.items[productId] ?? 0;
       final product = products.firstWhere((product) => product.id == productId);
-      final cappedLocalQuantity =
-          min(localQuantity + remoteQuantity, product.availableQuantity);
-
+      // Cap the quantity of each item to the available quantity
+      final cappedLocalQuantity = min(
+        localQuantity,
+        product.availableQuantity - remoteQuantity,
+      );
+      // if the capped quantity is > 0, add to the list of items to add
       if (cappedLocalQuantity > 0) {
         localItemsToAdd
             .add(Item(productId: productId, quantity: cappedLocalQuantity));
       }
     }
-
     return localItemsToAdd;
   }
 }
