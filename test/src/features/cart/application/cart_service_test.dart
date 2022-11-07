@@ -165,4 +165,82 @@ void main() {
       expect(() => container.read(cartTotalProvider), throwsStateError);
     });
   });
+
+  group('itemAvailableQuantityProvider', () {
+    ProviderContainer makeProviderContainer({
+      required Stream<Cart> cart,
+      required Stream<List<Product>> products,
+    }) {
+      final container = ProviderContainer(overrides: [
+        cartProvider.overrideWithProvider(StreamProvider((ref) => cart)),
+        productListStreamProvider
+            .overrideWithProvider(StreamProvider.autoDispose((ref) => products))
+      ]);
+      addTearDown(container.dispose);
+
+      return container;
+    }
+
+    test('loading cart', () async {
+      final container = makeProviderContainer(
+          cart: Stream.value(const Cart()),
+          products: Stream.value(kTestProducts));
+
+      await container.read(productListStreamProvider.future);
+      final total = container.read(cartTotalProvider);
+      expect(0, total);
+    });
+
+    test('empty cart', () async {
+      final container = makeProviderContainer(
+          cart: Stream.value(const Cart()),
+          products: Stream.value(kTestProducts));
+
+      await container.read(cartProvider.future);
+      await container.read(productListStreamProvider.future);
+
+      final total = container.read(cartTotalProvider);
+
+      expect(0, total);
+    });
+
+    test('product with quantity = 1', () async {
+      final container = makeProviderContainer(
+          cart: Stream.value(const Cart()),
+          products: Stream.value(kTestProducts));
+      await container.read(cartProvider.future);
+      await container.read(productListStreamProvider.future);
+
+      final availableQuantity =
+          container.read(itemAvailableQuantityProvider(kTestProducts[0]));
+
+      expect(availableQuantity, 5);
+    });
+
+    test('product with quantity = 5', () async {
+      final container = makeProviderContainer(
+          cart: Stream.value(const Cart({'1': 5})),
+          products: Stream.value(kTestProducts));
+      await container.read(cartProvider.future);
+      await container.read(productListStreamProvider.future);
+
+      final availableQuantity =
+          container.read(itemAvailableQuantityProvider(kTestProducts[0]));
+
+      expect(availableQuantity, 0);
+    });
+
+    test('product with quantity = 10', () async {
+      final container = makeProviderContainer(
+          cart: Stream.value(const Cart({'1': 10})),
+          products: Stream.value(kTestProducts));
+      await container.read(cartProvider.future);
+      await container.read(productListStreamProvider.future);
+
+      final availableQuantity =
+          container.read(itemAvailableQuantityProvider(kTestProducts[0]));
+
+      expect(availableQuantity, 0);
+    });
+  });
 }
