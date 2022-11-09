@@ -69,6 +69,13 @@ class AuthRobot {
     await tester.enterText(passwordField, password);
   }
 
+  void expectEmailAndPasswordFieldsFound() {
+    final emailField = find.byKey(EmailPasswordSignInScreen.emailKey);
+    expect(emailField, findsOneWidget);
+    final passwordField = find.byKey(EmailPasswordSignInScreen.passwordKey);
+    expect(passwordField, findsOneWidget);
+  }
+
   void expectCreateAccountButtonFound() {
     final dialogTitle = find.text('Create an account');
     expect(dialogTitle, findsOneWidget);
@@ -79,7 +86,7 @@ class AuthRobot {
     expect(dialogTitle, findsNothing);
   }
 
-  Future<void> signInWithEmailAndPassword() async {
+  Future<void> enterAndSubmitEmailAndPassword() async {
     await enterEmail('test@test.com');
     await enterPassword('test1234');
     await tapEmailAndPasswordSubmitButton();

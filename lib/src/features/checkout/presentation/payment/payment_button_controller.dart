@@ -2,10 +2,9 @@ import 'package:ecommerce_app/src/features/checkout/application/fake_checkout_se
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PaymentButtonController extends StateNotifier<AsyncValue<void>> {
-  final FakeCheckoutService checkoutService;
-
   PaymentButtonController({required this.checkoutService})
       : super(const AsyncData(null));
+  final FakeCheckoutService checkoutService;
 
   Future<void> pay() async {
     state = const AsyncLoading();
@@ -14,6 +13,8 @@ class PaymentButtonController extends StateNotifier<AsyncValue<void>> {
 }
 
 final paymentButtonControllerProvider = StateNotifierProvider.autoDispose<
-        PaymentButtonController, AsyncValue<void>>(
-    (ref) => PaymentButtonController(
-        checkoutService: ref.watch(checkoutServiceProvider)));
+    PaymentButtonController, AsyncValue<void>>((ref) {
+  return PaymentButtonController(
+    checkoutService: ref.watch(checkoutServiceProvider),
+  );
+});
