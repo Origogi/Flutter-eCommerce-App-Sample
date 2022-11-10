@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:ecommerce_app/src/app.dart';
 import 'package:ecommerce_app/src/exceptions/aysnc_error_logger.dart';
+import 'package:ecommerce_app/src/exceptions/error_logger.dart';
 import 'package:ecommerce_app/src/features/cart/application/cart_sync_service.dart';
 import 'package:ecommerce_app/src/features/cart/data/local/local_cart_repository.dart';
 import 'package:ecommerce_app/src/features/cart/data/local/sembast_cart_repository.dart';
@@ -13,6 +14,8 @@ import 'package:go_router/go_router.dart';
 void main() async {
   // * For more info on error handling, see:
   // * https://docs.flutter.dev/testing/errors
+
+  late ErrorLogger errorLogger;
   await runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
     // turn off the # in the URLs on the web
@@ -24,6 +27,7 @@ void main() async {
     ], observers: [
       AsyncErrorLogger()
     ]);
+    errorLogger = container.read(errorLoggerProvider);
     // * Initialize CartSyncService to start the listener
     container.read(cartSyncServiceProvider);
     // * Entry point of the app
@@ -47,6 +51,6 @@ void main() async {
     };
   }, (Object error, StackTrace stack) {
     // * Log any errors to console
-    debugPrint(error.toString());
+    errorLogger.logError(error, stack);
   });
 }

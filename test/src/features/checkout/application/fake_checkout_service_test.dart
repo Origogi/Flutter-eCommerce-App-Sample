@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/src/exceptions/app_exception.dart';
 import 'package:ecommerce_app/src/features/authentication/data/fake_auth_repository.dart';
 import 'package:ecommerce_app/src/features/authentication/domain/app_user.dart';
 import 'package:ecommerce_app/src/features/cart/data/remote/remote_cart_repository.dart';
@@ -65,7 +66,9 @@ void main() {
       );
       final checkoutService = makeCheckoutService();
       // run
-      expect(checkoutService.placeOrder, throwsStateError);
+
+      expect(checkoutService.placeOrder,
+          throwsA(const AppException.paymentFailureEmptyCart()));
     });
 
     test('non-empty cart, creates order', () async {

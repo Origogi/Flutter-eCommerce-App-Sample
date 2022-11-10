@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/src/exceptions/app_exception.dart';
 import 'package:ecommerce_app/src/features/authentication/data/fake_auth_repository.dart';
 import 'package:ecommerce_app/src/features/cart/data/remote/remote_cart_repository.dart';
 import 'package:ecommerce_app/src/features/cart/domain/cart.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// A fake checkout service that doesn't process real payments.
 class FakeCheckoutService {
   FakeCheckoutService(this.ref);
+
   final Ref ref;
 
   /// Temporary client-side logic for placing an order.
@@ -48,7 +50,7 @@ class FakeCheckoutService {
       // 4. Empty the cart
       await remoteCartRepository.setCart(uid, const Cart());
     } else {
-      throw StateError('Can\'t place an order if the cart is empty');
+      throw const AppException.paymentFailureEmptyCart();
     }
   }
 
