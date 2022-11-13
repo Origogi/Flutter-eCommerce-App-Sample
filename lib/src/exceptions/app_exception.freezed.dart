@@ -22,20 +22,16 @@ mixin _$AppException {
     required TResult Function() weakPassword,
     required TResult Function() wrongPassword,
     required TResult Function() userNotFound,
-    required TResult Function() cartSyncFailed,
-    required TResult Function() paymentFailureEmptyCart,
     required TResult Function(String status) parseOrderFailure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? emailAlreadyInUse,
-    TResult? Function()? weakPassword,
-    TResult? Function()? wrongPassword,
-    TResult? Function()? userNotFound,
-    TResult? Function()? cartSyncFailed,
-    TResult? Function()? paymentFailureEmptyCart,
-    TResult? Function(String status)? parseOrderFailure,
+    TResult Function()? emailAlreadyInUse,
+    TResult Function()? weakPassword,
+    TResult Function()? wrongPassword,
+    TResult Function()? userNotFound,
+    TResult Function(String status)? parseOrderFailure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -44,8 +40,6 @@ mixin _$AppException {
     TResult Function()? weakPassword,
     TResult Function()? wrongPassword,
     TResult Function()? userNotFound,
-    TResult Function()? cartSyncFailed,
-    TResult Function()? paymentFailureEmptyCart,
     TResult Function(String status)? parseOrderFailure,
     required TResult orElse(),
   }) =>
@@ -56,21 +50,16 @@ mixin _$AppException {
     required TResult Function(WeakPassword value) weakPassword,
     required TResult Function(WrongPassword value) wrongPassword,
     required TResult Function(UserNotFound value) userNotFound,
-    required TResult Function(CartSyncFailed value) cartSyncFailed,
-    required TResult Function(PaymentFailureEmptyCart value)
-        paymentFailureEmptyCart,
     required TResult Function(ParseOrderFailure value) parseOrderFailure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(EmailAlreadyInUse value)? emailAlreadyInUse,
-    TResult? Function(WeakPassword value)? weakPassword,
-    TResult? Function(WrongPassword value)? wrongPassword,
-    TResult? Function(UserNotFound value)? userNotFound,
-    TResult? Function(CartSyncFailed value)? cartSyncFailed,
-    TResult? Function(PaymentFailureEmptyCart value)? paymentFailureEmptyCart,
-    TResult? Function(ParseOrderFailure value)? parseOrderFailure,
+    TResult Function(EmailAlreadyInUse value)? emailAlreadyInUse,
+    TResult Function(WeakPassword value)? weakPassword,
+    TResult Function(WrongPassword value)? wrongPassword,
+    TResult Function(UserNotFound value)? userNotFound,
+    TResult Function(ParseOrderFailure value)? parseOrderFailure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -79,8 +68,6 @@ mixin _$AppException {
     TResult Function(WeakPassword value)? weakPassword,
     TResult Function(WrongPassword value)? wrongPassword,
     TResult Function(UserNotFound value)? userNotFound,
-    TResult Function(CartSyncFailed value)? cartSyncFailed,
-    TResult Function(PaymentFailureEmptyCart value)? paymentFailureEmptyCart,
     TResult Function(ParseOrderFailure value)? parseOrderFailure,
     required TResult orElse(),
   }) =>
@@ -91,18 +78,16 @@ mixin _$AppException {
 abstract class $AppExceptionCopyWith<$Res> {
   factory $AppExceptionCopyWith(
           AppException value, $Res Function(AppException) then) =
-      _$AppExceptionCopyWithImpl<$Res, AppException>;
+      _$AppExceptionCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$AppExceptionCopyWithImpl<$Res, $Val extends AppException>
-    implements $AppExceptionCopyWith<$Res> {
+class _$AppExceptionCopyWithImpl<$Res> implements $AppExceptionCopyWith<$Res> {
   _$AppExceptionCopyWithImpl(this._value, this._then);
 
+  final AppException _value;
   // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final $Res Function(AppException) _then;
 }
 
 /// @nodoc
@@ -114,11 +99,14 @@ abstract class _$$EmailAlreadyInUseCopyWith<$Res> {
 
 /// @nodoc
 class __$$EmailAlreadyInUseCopyWithImpl<$Res>
-    extends _$AppExceptionCopyWithImpl<$Res, _$EmailAlreadyInUse>
+    extends _$AppExceptionCopyWithImpl<$Res>
     implements _$$EmailAlreadyInUseCopyWith<$Res> {
   __$$EmailAlreadyInUseCopyWithImpl(
       _$EmailAlreadyInUse _value, $Res Function(_$EmailAlreadyInUse) _then)
-      : super(_value, _then);
+      : super(_value, (v) => _then(v as _$EmailAlreadyInUse));
+
+  @override
+  _$EmailAlreadyInUse get _value => super._value as _$EmailAlreadyInUse;
 }
 
 /// @nodoc
@@ -147,8 +135,6 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
     required TResult Function() weakPassword,
     required TResult Function() wrongPassword,
     required TResult Function() userNotFound,
-    required TResult Function() cartSyncFailed,
-    required TResult Function() paymentFailureEmptyCart,
     required TResult Function(String status) parseOrderFailure,
   }) {
     return emailAlreadyInUse();
@@ -157,13 +143,11 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? emailAlreadyInUse,
-    TResult? Function()? weakPassword,
-    TResult? Function()? wrongPassword,
-    TResult? Function()? userNotFound,
-    TResult? Function()? cartSyncFailed,
-    TResult? Function()? paymentFailureEmptyCart,
-    TResult? Function(String status)? parseOrderFailure,
+    TResult Function()? emailAlreadyInUse,
+    TResult Function()? weakPassword,
+    TResult Function()? wrongPassword,
+    TResult Function()? userNotFound,
+    TResult Function(String status)? parseOrderFailure,
   }) {
     return emailAlreadyInUse?.call();
   }
@@ -175,8 +159,6 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
     TResult Function()? weakPassword,
     TResult Function()? wrongPassword,
     TResult Function()? userNotFound,
-    TResult Function()? cartSyncFailed,
-    TResult Function()? paymentFailureEmptyCart,
     TResult Function(String status)? parseOrderFailure,
     required TResult orElse(),
   }) {
@@ -193,9 +175,6 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
     required TResult Function(WeakPassword value) weakPassword,
     required TResult Function(WrongPassword value) wrongPassword,
     required TResult Function(UserNotFound value) userNotFound,
-    required TResult Function(CartSyncFailed value) cartSyncFailed,
-    required TResult Function(PaymentFailureEmptyCart value)
-        paymentFailureEmptyCart,
     required TResult Function(ParseOrderFailure value) parseOrderFailure,
   }) {
     return emailAlreadyInUse(this);
@@ -204,13 +183,11 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(EmailAlreadyInUse value)? emailAlreadyInUse,
-    TResult? Function(WeakPassword value)? weakPassword,
-    TResult? Function(WrongPassword value)? wrongPassword,
-    TResult? Function(UserNotFound value)? userNotFound,
-    TResult? Function(CartSyncFailed value)? cartSyncFailed,
-    TResult? Function(PaymentFailureEmptyCart value)? paymentFailureEmptyCart,
-    TResult? Function(ParseOrderFailure value)? parseOrderFailure,
+    TResult Function(EmailAlreadyInUse value)? emailAlreadyInUse,
+    TResult Function(WeakPassword value)? weakPassword,
+    TResult Function(WrongPassword value)? wrongPassword,
+    TResult Function(UserNotFound value)? userNotFound,
+    TResult Function(ParseOrderFailure value)? parseOrderFailure,
   }) {
     return emailAlreadyInUse?.call(this);
   }
@@ -222,8 +199,6 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
     TResult Function(WeakPassword value)? weakPassword,
     TResult Function(WrongPassword value)? wrongPassword,
     TResult Function(UserNotFound value)? userNotFound,
-    TResult Function(CartSyncFailed value)? cartSyncFailed,
-    TResult Function(PaymentFailureEmptyCart value)? paymentFailureEmptyCart,
     TResult Function(ParseOrderFailure value)? parseOrderFailure,
     required TResult orElse(),
   }) {
@@ -247,11 +222,14 @@ abstract class _$$WeakPasswordCopyWith<$Res> {
 
 /// @nodoc
 class __$$WeakPasswordCopyWithImpl<$Res>
-    extends _$AppExceptionCopyWithImpl<$Res, _$WeakPassword>
+    extends _$AppExceptionCopyWithImpl<$Res>
     implements _$$WeakPasswordCopyWith<$Res> {
   __$$WeakPasswordCopyWithImpl(
       _$WeakPassword _value, $Res Function(_$WeakPassword) _then)
-      : super(_value, _then);
+      : super(_value, (v) => _then(v as _$WeakPassword));
+
+  @override
+  _$WeakPassword get _value => super._value as _$WeakPassword;
 }
 
 /// @nodoc
@@ -280,8 +258,6 @@ class _$WeakPassword implements WeakPassword {
     required TResult Function() weakPassword,
     required TResult Function() wrongPassword,
     required TResult Function() userNotFound,
-    required TResult Function() cartSyncFailed,
-    required TResult Function() paymentFailureEmptyCart,
     required TResult Function(String status) parseOrderFailure,
   }) {
     return weakPassword();
@@ -290,13 +266,11 @@ class _$WeakPassword implements WeakPassword {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? emailAlreadyInUse,
-    TResult? Function()? weakPassword,
-    TResult? Function()? wrongPassword,
-    TResult? Function()? userNotFound,
-    TResult? Function()? cartSyncFailed,
-    TResult? Function()? paymentFailureEmptyCart,
-    TResult? Function(String status)? parseOrderFailure,
+    TResult Function()? emailAlreadyInUse,
+    TResult Function()? weakPassword,
+    TResult Function()? wrongPassword,
+    TResult Function()? userNotFound,
+    TResult Function(String status)? parseOrderFailure,
   }) {
     return weakPassword?.call();
   }
@@ -308,8 +282,6 @@ class _$WeakPassword implements WeakPassword {
     TResult Function()? weakPassword,
     TResult Function()? wrongPassword,
     TResult Function()? userNotFound,
-    TResult Function()? cartSyncFailed,
-    TResult Function()? paymentFailureEmptyCart,
     TResult Function(String status)? parseOrderFailure,
     required TResult orElse(),
   }) {
@@ -326,9 +298,6 @@ class _$WeakPassword implements WeakPassword {
     required TResult Function(WeakPassword value) weakPassword,
     required TResult Function(WrongPassword value) wrongPassword,
     required TResult Function(UserNotFound value) userNotFound,
-    required TResult Function(CartSyncFailed value) cartSyncFailed,
-    required TResult Function(PaymentFailureEmptyCart value)
-        paymentFailureEmptyCart,
     required TResult Function(ParseOrderFailure value) parseOrderFailure,
   }) {
     return weakPassword(this);
@@ -337,13 +306,11 @@ class _$WeakPassword implements WeakPassword {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(EmailAlreadyInUse value)? emailAlreadyInUse,
-    TResult? Function(WeakPassword value)? weakPassword,
-    TResult? Function(WrongPassword value)? wrongPassword,
-    TResult? Function(UserNotFound value)? userNotFound,
-    TResult? Function(CartSyncFailed value)? cartSyncFailed,
-    TResult? Function(PaymentFailureEmptyCart value)? paymentFailureEmptyCart,
-    TResult? Function(ParseOrderFailure value)? parseOrderFailure,
+    TResult Function(EmailAlreadyInUse value)? emailAlreadyInUse,
+    TResult Function(WeakPassword value)? weakPassword,
+    TResult Function(WrongPassword value)? wrongPassword,
+    TResult Function(UserNotFound value)? userNotFound,
+    TResult Function(ParseOrderFailure value)? parseOrderFailure,
   }) {
     return weakPassword?.call(this);
   }
@@ -355,8 +322,6 @@ class _$WeakPassword implements WeakPassword {
     TResult Function(WeakPassword value)? weakPassword,
     TResult Function(WrongPassword value)? wrongPassword,
     TResult Function(UserNotFound value)? userNotFound,
-    TResult Function(CartSyncFailed value)? cartSyncFailed,
-    TResult Function(PaymentFailureEmptyCart value)? paymentFailureEmptyCart,
     TResult Function(ParseOrderFailure value)? parseOrderFailure,
     required TResult orElse(),
   }) {
@@ -380,11 +345,14 @@ abstract class _$$WrongPasswordCopyWith<$Res> {
 
 /// @nodoc
 class __$$WrongPasswordCopyWithImpl<$Res>
-    extends _$AppExceptionCopyWithImpl<$Res, _$WrongPassword>
+    extends _$AppExceptionCopyWithImpl<$Res>
     implements _$$WrongPasswordCopyWith<$Res> {
   __$$WrongPasswordCopyWithImpl(
       _$WrongPassword _value, $Res Function(_$WrongPassword) _then)
-      : super(_value, _then);
+      : super(_value, (v) => _then(v as _$WrongPassword));
+
+  @override
+  _$WrongPassword get _value => super._value as _$WrongPassword;
 }
 
 /// @nodoc
@@ -413,8 +381,6 @@ class _$WrongPassword implements WrongPassword {
     required TResult Function() weakPassword,
     required TResult Function() wrongPassword,
     required TResult Function() userNotFound,
-    required TResult Function() cartSyncFailed,
-    required TResult Function() paymentFailureEmptyCart,
     required TResult Function(String status) parseOrderFailure,
   }) {
     return wrongPassword();
@@ -423,13 +389,11 @@ class _$WrongPassword implements WrongPassword {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? emailAlreadyInUse,
-    TResult? Function()? weakPassword,
-    TResult? Function()? wrongPassword,
-    TResult? Function()? userNotFound,
-    TResult? Function()? cartSyncFailed,
-    TResult? Function()? paymentFailureEmptyCart,
-    TResult? Function(String status)? parseOrderFailure,
+    TResult Function()? emailAlreadyInUse,
+    TResult Function()? weakPassword,
+    TResult Function()? wrongPassword,
+    TResult Function()? userNotFound,
+    TResult Function(String status)? parseOrderFailure,
   }) {
     return wrongPassword?.call();
   }
@@ -441,8 +405,6 @@ class _$WrongPassword implements WrongPassword {
     TResult Function()? weakPassword,
     TResult Function()? wrongPassword,
     TResult Function()? userNotFound,
-    TResult Function()? cartSyncFailed,
-    TResult Function()? paymentFailureEmptyCart,
     TResult Function(String status)? parseOrderFailure,
     required TResult orElse(),
   }) {
@@ -459,9 +421,6 @@ class _$WrongPassword implements WrongPassword {
     required TResult Function(WeakPassword value) weakPassword,
     required TResult Function(WrongPassword value) wrongPassword,
     required TResult Function(UserNotFound value) userNotFound,
-    required TResult Function(CartSyncFailed value) cartSyncFailed,
-    required TResult Function(PaymentFailureEmptyCart value)
-        paymentFailureEmptyCart,
     required TResult Function(ParseOrderFailure value) parseOrderFailure,
   }) {
     return wrongPassword(this);
@@ -470,13 +429,11 @@ class _$WrongPassword implements WrongPassword {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(EmailAlreadyInUse value)? emailAlreadyInUse,
-    TResult? Function(WeakPassword value)? weakPassword,
-    TResult? Function(WrongPassword value)? wrongPassword,
-    TResult? Function(UserNotFound value)? userNotFound,
-    TResult? Function(CartSyncFailed value)? cartSyncFailed,
-    TResult? Function(PaymentFailureEmptyCart value)? paymentFailureEmptyCart,
-    TResult? Function(ParseOrderFailure value)? parseOrderFailure,
+    TResult Function(EmailAlreadyInUse value)? emailAlreadyInUse,
+    TResult Function(WeakPassword value)? weakPassword,
+    TResult Function(WrongPassword value)? wrongPassword,
+    TResult Function(UserNotFound value)? userNotFound,
+    TResult Function(ParseOrderFailure value)? parseOrderFailure,
   }) {
     return wrongPassword?.call(this);
   }
@@ -488,8 +445,6 @@ class _$WrongPassword implements WrongPassword {
     TResult Function(WeakPassword value)? weakPassword,
     TResult Function(WrongPassword value)? wrongPassword,
     TResult Function(UserNotFound value)? userNotFound,
-    TResult Function(CartSyncFailed value)? cartSyncFailed,
-    TResult Function(PaymentFailureEmptyCart value)? paymentFailureEmptyCart,
     TResult Function(ParseOrderFailure value)? parseOrderFailure,
     required TResult orElse(),
   }) {
@@ -513,11 +468,14 @@ abstract class _$$UserNotFoundCopyWith<$Res> {
 
 /// @nodoc
 class __$$UserNotFoundCopyWithImpl<$Res>
-    extends _$AppExceptionCopyWithImpl<$Res, _$UserNotFound>
+    extends _$AppExceptionCopyWithImpl<$Res>
     implements _$$UserNotFoundCopyWith<$Res> {
   __$$UserNotFoundCopyWithImpl(
       _$UserNotFound _value, $Res Function(_$UserNotFound) _then)
-      : super(_value, _then);
+      : super(_value, (v) => _then(v as _$UserNotFound));
+
+  @override
+  _$UserNotFound get _value => super._value as _$UserNotFound;
 }
 
 /// @nodoc
@@ -546,8 +504,6 @@ class _$UserNotFound implements UserNotFound {
     required TResult Function() weakPassword,
     required TResult Function() wrongPassword,
     required TResult Function() userNotFound,
-    required TResult Function() cartSyncFailed,
-    required TResult Function() paymentFailureEmptyCart,
     required TResult Function(String status) parseOrderFailure,
   }) {
     return userNotFound();
@@ -556,13 +512,11 @@ class _$UserNotFound implements UserNotFound {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? emailAlreadyInUse,
-    TResult? Function()? weakPassword,
-    TResult? Function()? wrongPassword,
-    TResult? Function()? userNotFound,
-    TResult? Function()? cartSyncFailed,
-    TResult? Function()? paymentFailureEmptyCart,
-    TResult? Function(String status)? parseOrderFailure,
+    TResult Function()? emailAlreadyInUse,
+    TResult Function()? weakPassword,
+    TResult Function()? wrongPassword,
+    TResult Function()? userNotFound,
+    TResult Function(String status)? parseOrderFailure,
   }) {
     return userNotFound?.call();
   }
@@ -574,8 +528,6 @@ class _$UserNotFound implements UserNotFound {
     TResult Function()? weakPassword,
     TResult Function()? wrongPassword,
     TResult Function()? userNotFound,
-    TResult Function()? cartSyncFailed,
-    TResult Function()? paymentFailureEmptyCart,
     TResult Function(String status)? parseOrderFailure,
     required TResult orElse(),
   }) {
@@ -592,9 +544,6 @@ class _$UserNotFound implements UserNotFound {
     required TResult Function(WeakPassword value) weakPassword,
     required TResult Function(WrongPassword value) wrongPassword,
     required TResult Function(UserNotFound value) userNotFound,
-    required TResult Function(CartSyncFailed value) cartSyncFailed,
-    required TResult Function(PaymentFailureEmptyCart value)
-        paymentFailureEmptyCart,
     required TResult Function(ParseOrderFailure value) parseOrderFailure,
   }) {
     return userNotFound(this);
@@ -603,13 +552,11 @@ class _$UserNotFound implements UserNotFound {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(EmailAlreadyInUse value)? emailAlreadyInUse,
-    TResult? Function(WeakPassword value)? weakPassword,
-    TResult? Function(WrongPassword value)? wrongPassword,
-    TResult? Function(UserNotFound value)? userNotFound,
-    TResult? Function(CartSyncFailed value)? cartSyncFailed,
-    TResult? Function(PaymentFailureEmptyCart value)? paymentFailureEmptyCart,
-    TResult? Function(ParseOrderFailure value)? parseOrderFailure,
+    TResult Function(EmailAlreadyInUse value)? emailAlreadyInUse,
+    TResult Function(WeakPassword value)? weakPassword,
+    TResult Function(WrongPassword value)? wrongPassword,
+    TResult Function(UserNotFound value)? userNotFound,
+    TResult Function(ParseOrderFailure value)? parseOrderFailure,
   }) {
     return userNotFound?.call(this);
   }
@@ -621,8 +568,6 @@ class _$UserNotFound implements UserNotFound {
     TResult Function(WeakPassword value)? weakPassword,
     TResult Function(WrongPassword value)? wrongPassword,
     TResult Function(UserNotFound value)? userNotFound,
-    TResult Function(CartSyncFailed value)? cartSyncFailed,
-    TResult Function(PaymentFailureEmptyCart value)? paymentFailureEmptyCart,
     TResult Function(ParseOrderFailure value)? parseOrderFailure,
     required TResult orElse(),
   }) {
@@ -638,296 +583,30 @@ abstract class UserNotFound implements AppException {
 }
 
 /// @nodoc
-abstract class _$$CartSyncFailedCopyWith<$Res> {
-  factory _$$CartSyncFailedCopyWith(
-          _$CartSyncFailed value, $Res Function(_$CartSyncFailed) then) =
-      __$$CartSyncFailedCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$CartSyncFailedCopyWithImpl<$Res>
-    extends _$AppExceptionCopyWithImpl<$Res, _$CartSyncFailed>
-    implements _$$CartSyncFailedCopyWith<$Res> {
-  __$$CartSyncFailedCopyWithImpl(
-      _$CartSyncFailed _value, $Res Function(_$CartSyncFailed) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$CartSyncFailed implements CartSyncFailed {
-  const _$CartSyncFailed();
-
-  @override
-  String toString() {
-    return 'AppException.cartSyncFailed()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$CartSyncFailed);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() emailAlreadyInUse,
-    required TResult Function() weakPassword,
-    required TResult Function() wrongPassword,
-    required TResult Function() userNotFound,
-    required TResult Function() cartSyncFailed,
-    required TResult Function() paymentFailureEmptyCart,
-    required TResult Function(String status) parseOrderFailure,
-  }) {
-    return cartSyncFailed();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? emailAlreadyInUse,
-    TResult? Function()? weakPassword,
-    TResult? Function()? wrongPassword,
-    TResult? Function()? userNotFound,
-    TResult? Function()? cartSyncFailed,
-    TResult? Function()? paymentFailureEmptyCart,
-    TResult? Function(String status)? parseOrderFailure,
-  }) {
-    return cartSyncFailed?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? emailAlreadyInUse,
-    TResult Function()? weakPassword,
-    TResult Function()? wrongPassword,
-    TResult Function()? userNotFound,
-    TResult Function()? cartSyncFailed,
-    TResult Function()? paymentFailureEmptyCart,
-    TResult Function(String status)? parseOrderFailure,
-    required TResult orElse(),
-  }) {
-    if (cartSyncFailed != null) {
-      return cartSyncFailed();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(EmailAlreadyInUse value) emailAlreadyInUse,
-    required TResult Function(WeakPassword value) weakPassword,
-    required TResult Function(WrongPassword value) wrongPassword,
-    required TResult Function(UserNotFound value) userNotFound,
-    required TResult Function(CartSyncFailed value) cartSyncFailed,
-    required TResult Function(PaymentFailureEmptyCart value)
-        paymentFailureEmptyCart,
-    required TResult Function(ParseOrderFailure value) parseOrderFailure,
-  }) {
-    return cartSyncFailed(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(EmailAlreadyInUse value)? emailAlreadyInUse,
-    TResult? Function(WeakPassword value)? weakPassword,
-    TResult? Function(WrongPassword value)? wrongPassword,
-    TResult? Function(UserNotFound value)? userNotFound,
-    TResult? Function(CartSyncFailed value)? cartSyncFailed,
-    TResult? Function(PaymentFailureEmptyCart value)? paymentFailureEmptyCart,
-    TResult? Function(ParseOrderFailure value)? parseOrderFailure,
-  }) {
-    return cartSyncFailed?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(EmailAlreadyInUse value)? emailAlreadyInUse,
-    TResult Function(WeakPassword value)? weakPassword,
-    TResult Function(WrongPassword value)? wrongPassword,
-    TResult Function(UserNotFound value)? userNotFound,
-    TResult Function(CartSyncFailed value)? cartSyncFailed,
-    TResult Function(PaymentFailureEmptyCart value)? paymentFailureEmptyCart,
-    TResult Function(ParseOrderFailure value)? parseOrderFailure,
-    required TResult orElse(),
-  }) {
-    if (cartSyncFailed != null) {
-      return cartSyncFailed(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class CartSyncFailed implements AppException {
-  const factory CartSyncFailed() = _$CartSyncFailed;
-}
-
-/// @nodoc
-abstract class _$$PaymentFailureEmptyCartCopyWith<$Res> {
-  factory _$$PaymentFailureEmptyCartCopyWith(_$PaymentFailureEmptyCart value,
-          $Res Function(_$PaymentFailureEmptyCart) then) =
-      __$$PaymentFailureEmptyCartCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$PaymentFailureEmptyCartCopyWithImpl<$Res>
-    extends _$AppExceptionCopyWithImpl<$Res, _$PaymentFailureEmptyCart>
-    implements _$$PaymentFailureEmptyCartCopyWith<$Res> {
-  __$$PaymentFailureEmptyCartCopyWithImpl(_$PaymentFailureEmptyCart _value,
-      $Res Function(_$PaymentFailureEmptyCart) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$PaymentFailureEmptyCart implements PaymentFailureEmptyCart {
-  const _$PaymentFailureEmptyCart();
-
-  @override
-  String toString() {
-    return 'AppException.paymentFailureEmptyCart()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$PaymentFailureEmptyCart);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() emailAlreadyInUse,
-    required TResult Function() weakPassword,
-    required TResult Function() wrongPassword,
-    required TResult Function() userNotFound,
-    required TResult Function() cartSyncFailed,
-    required TResult Function() paymentFailureEmptyCart,
-    required TResult Function(String status) parseOrderFailure,
-  }) {
-    return paymentFailureEmptyCart();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? emailAlreadyInUse,
-    TResult? Function()? weakPassword,
-    TResult? Function()? wrongPassword,
-    TResult? Function()? userNotFound,
-    TResult? Function()? cartSyncFailed,
-    TResult? Function()? paymentFailureEmptyCart,
-    TResult? Function(String status)? parseOrderFailure,
-  }) {
-    return paymentFailureEmptyCart?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? emailAlreadyInUse,
-    TResult Function()? weakPassword,
-    TResult Function()? wrongPassword,
-    TResult Function()? userNotFound,
-    TResult Function()? cartSyncFailed,
-    TResult Function()? paymentFailureEmptyCart,
-    TResult Function(String status)? parseOrderFailure,
-    required TResult orElse(),
-  }) {
-    if (paymentFailureEmptyCart != null) {
-      return paymentFailureEmptyCart();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(EmailAlreadyInUse value) emailAlreadyInUse,
-    required TResult Function(WeakPassword value) weakPassword,
-    required TResult Function(WrongPassword value) wrongPassword,
-    required TResult Function(UserNotFound value) userNotFound,
-    required TResult Function(CartSyncFailed value) cartSyncFailed,
-    required TResult Function(PaymentFailureEmptyCart value)
-        paymentFailureEmptyCart,
-    required TResult Function(ParseOrderFailure value) parseOrderFailure,
-  }) {
-    return paymentFailureEmptyCart(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(EmailAlreadyInUse value)? emailAlreadyInUse,
-    TResult? Function(WeakPassword value)? weakPassword,
-    TResult? Function(WrongPassword value)? wrongPassword,
-    TResult? Function(UserNotFound value)? userNotFound,
-    TResult? Function(CartSyncFailed value)? cartSyncFailed,
-    TResult? Function(PaymentFailureEmptyCart value)? paymentFailureEmptyCart,
-    TResult? Function(ParseOrderFailure value)? parseOrderFailure,
-  }) {
-    return paymentFailureEmptyCart?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(EmailAlreadyInUse value)? emailAlreadyInUse,
-    TResult Function(WeakPassword value)? weakPassword,
-    TResult Function(WrongPassword value)? wrongPassword,
-    TResult Function(UserNotFound value)? userNotFound,
-    TResult Function(CartSyncFailed value)? cartSyncFailed,
-    TResult Function(PaymentFailureEmptyCart value)? paymentFailureEmptyCart,
-    TResult Function(ParseOrderFailure value)? parseOrderFailure,
-    required TResult orElse(),
-  }) {
-    if (paymentFailureEmptyCart != null) {
-      return paymentFailureEmptyCart(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class PaymentFailureEmptyCart implements AppException {
-  const factory PaymentFailureEmptyCart() = _$PaymentFailureEmptyCart;
-}
-
-/// @nodoc
 abstract class _$$ParseOrderFailureCopyWith<$Res> {
   factory _$$ParseOrderFailureCopyWith(
           _$ParseOrderFailure value, $Res Function(_$ParseOrderFailure) then) =
       __$$ParseOrderFailureCopyWithImpl<$Res>;
-  @useResult
   $Res call({String status});
 }
 
 /// @nodoc
 class __$$ParseOrderFailureCopyWithImpl<$Res>
-    extends _$AppExceptionCopyWithImpl<$Res, _$ParseOrderFailure>
+    extends _$AppExceptionCopyWithImpl<$Res>
     implements _$$ParseOrderFailureCopyWith<$Res> {
   __$$ParseOrderFailureCopyWithImpl(
       _$ParseOrderFailure _value, $Res Function(_$ParseOrderFailure) _then)
-      : super(_value, _then);
+      : super(_value, (v) => _then(v as _$ParseOrderFailure));
 
-  @pragma('vm:prefer-inline')
+  @override
+  _$ParseOrderFailure get _value => super._value as _$ParseOrderFailure;
+
   @override
   $Res call({
-    Object? status = null,
+    Object? status = freezed,
   }) {
     return _then(_$ParseOrderFailure(
-      null == status
+      status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String,
@@ -953,15 +632,15 @@ class _$ParseOrderFailure implements ParseOrderFailure {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ParseOrderFailure &&
-            (identical(other.status, status) || other.status == status));
+            const DeepCollectionEquality().equals(other.status, status));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(status));
 
   @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
   _$$ParseOrderFailureCopyWith<_$ParseOrderFailure> get copyWith =>
       __$$ParseOrderFailureCopyWithImpl<_$ParseOrderFailure>(this, _$identity);
 
@@ -972,8 +651,6 @@ class _$ParseOrderFailure implements ParseOrderFailure {
     required TResult Function() weakPassword,
     required TResult Function() wrongPassword,
     required TResult Function() userNotFound,
-    required TResult Function() cartSyncFailed,
-    required TResult Function() paymentFailureEmptyCart,
     required TResult Function(String status) parseOrderFailure,
   }) {
     return parseOrderFailure(status);
@@ -982,13 +659,11 @@ class _$ParseOrderFailure implements ParseOrderFailure {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? emailAlreadyInUse,
-    TResult? Function()? weakPassword,
-    TResult? Function()? wrongPassword,
-    TResult? Function()? userNotFound,
-    TResult? Function()? cartSyncFailed,
-    TResult? Function()? paymentFailureEmptyCart,
-    TResult? Function(String status)? parseOrderFailure,
+    TResult Function()? emailAlreadyInUse,
+    TResult Function()? weakPassword,
+    TResult Function()? wrongPassword,
+    TResult Function()? userNotFound,
+    TResult Function(String status)? parseOrderFailure,
   }) {
     return parseOrderFailure?.call(status);
   }
@@ -1000,8 +675,6 @@ class _$ParseOrderFailure implements ParseOrderFailure {
     TResult Function()? weakPassword,
     TResult Function()? wrongPassword,
     TResult Function()? userNotFound,
-    TResult Function()? cartSyncFailed,
-    TResult Function()? paymentFailureEmptyCart,
     TResult Function(String status)? parseOrderFailure,
     required TResult orElse(),
   }) {
@@ -1018,9 +691,6 @@ class _$ParseOrderFailure implements ParseOrderFailure {
     required TResult Function(WeakPassword value) weakPassword,
     required TResult Function(WrongPassword value) wrongPassword,
     required TResult Function(UserNotFound value) userNotFound,
-    required TResult Function(CartSyncFailed value) cartSyncFailed,
-    required TResult Function(PaymentFailureEmptyCart value)
-        paymentFailureEmptyCart,
     required TResult Function(ParseOrderFailure value) parseOrderFailure,
   }) {
     return parseOrderFailure(this);
@@ -1029,13 +699,11 @@ class _$ParseOrderFailure implements ParseOrderFailure {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(EmailAlreadyInUse value)? emailAlreadyInUse,
-    TResult? Function(WeakPassword value)? weakPassword,
-    TResult? Function(WrongPassword value)? wrongPassword,
-    TResult? Function(UserNotFound value)? userNotFound,
-    TResult? Function(CartSyncFailed value)? cartSyncFailed,
-    TResult? Function(PaymentFailureEmptyCart value)? paymentFailureEmptyCart,
-    TResult? Function(ParseOrderFailure value)? parseOrderFailure,
+    TResult Function(EmailAlreadyInUse value)? emailAlreadyInUse,
+    TResult Function(WeakPassword value)? weakPassword,
+    TResult Function(WrongPassword value)? wrongPassword,
+    TResult Function(UserNotFound value)? userNotFound,
+    TResult Function(ParseOrderFailure value)? parseOrderFailure,
   }) {
     return parseOrderFailure?.call(this);
   }
@@ -1047,8 +715,6 @@ class _$ParseOrderFailure implements ParseOrderFailure {
     TResult Function(WeakPassword value)? weakPassword,
     TResult Function(WrongPassword value)? wrongPassword,
     TResult Function(UserNotFound value)? userNotFound,
-    TResult Function(CartSyncFailed value)? cartSyncFailed,
-    TResult Function(PaymentFailureEmptyCart value)? paymentFailureEmptyCart,
     TResult Function(ParseOrderFailure value)? parseOrderFailure,
     required TResult orElse(),
   }) {

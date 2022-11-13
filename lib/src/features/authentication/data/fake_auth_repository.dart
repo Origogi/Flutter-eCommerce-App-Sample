@@ -1,19 +1,16 @@
 import 'package:ecommerce_app/src/exceptions/app_exception.dart';
 import 'package:ecommerce_app/src/features/authentication/domain/app_user.dart';
 import 'package:ecommerce_app/src/features/authentication/domain/fake_app_user.dart';
-import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
 import 'package:ecommerce_app/src/utils/delay.dart';
 import 'package:ecommerce_app/src/utils/in_memory_store.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FakeAuthRepository {
   FakeAuthRepository({this.addDelay = true});
-
   final bool addDelay;
   final _authState = InMemoryStore<AppUser?>(null);
 
   Stream<AppUser?> authStateChanges() => _authState.stream;
-
   AppUser? get currentUser => _authState.value;
 
   // List to keep track of all user accounts
@@ -36,8 +33,8 @@ class FakeAuthRepository {
     throw const AppException.userNotFound();
   }
 
-  Future<void> createUserWithEmailAndPassword(String email,
-      String password) async {
+  Future<void> createUserWithEmailAndPassword(
+      String email, String password) async {
     await delay(addDelay);
     // check if the email is already in use
     for (final u in _users) {
@@ -47,7 +44,7 @@ class FakeAuthRepository {
     }
     // minimum password length requirement
     if (password.length < 8) {
-      throw const AppException.weakPassword();
+      throw const AppException.userNotFound();
     }
     // create new user
     _createNewUser(email, password);
@@ -62,10 +59,7 @@ class FakeAuthRepository {
   void _createNewUser(String email, String password) {
     // create new user
     final user = FakeAppUser(
-      uid: email
-          .split('')
-          .reversed
-          .join(),
+      uid: email.split('').reversed.join(),
       email: email,
       password: password,
     );

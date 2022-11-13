@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:ecommerce_app/src/app.dart';
-import 'package:ecommerce_app/src/exceptions/aysnc_error_logger.dart';
+import 'package:ecommerce_app/src/exceptions/async_error_logger.dart';
 import 'package:ecommerce_app/src/exceptions/error_logger.dart';
 import 'package:ecommerce_app/src/features/cart/application/cart_sync_service.dart';
 import 'package:ecommerce_app/src/features/cart/data/local/local_cart_repository.dart';
@@ -12,21 +12,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 void main() async {
+  late ErrorLogger errorLogger;
   // * For more info on error handling, see:
   // * https://docs.flutter.dev/testing/errors
-
-  late ErrorLogger errorLogger;
   await runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
     // turn off the # in the URLs on the web
     GoRouter.setUrlPathStrategy(UrlPathStrategy.path);
     final localCartRepository = await SembastCartRepository.makeDefault();
     // * Create ProviderContainer with any required overrides
-    final container = ProviderContainer(overrides: [
-      localCartRepositoryProvider.overrideWithValue(localCartRepository),
-    ], observers: [
-      AsyncErrorLogger()
-    ]);
+    final container = ProviderContainer(
+      overrides: [
+        localCartRepositoryProvider.overrideWithValue(localCartRepository),
+      ],
+      observers: [AsyncErrorLogger()],
+    );
     errorLogger = container.read(errorLoggerProvider);
     // * Initialize CartSyncService to start the listener
     container.read(cartSyncServiceProvider);
@@ -50,7 +50,6 @@ void main() async {
       );
     };
   }, (Object error, StackTrace stack) {
-    // * Log any errors to console
     errorLogger.logError(error, stack);
   });
 }

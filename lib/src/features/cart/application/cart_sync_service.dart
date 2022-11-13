@@ -15,7 +15,6 @@ class CartSyncService {
   CartSyncService(this.ref) {
     _init();
   }
-
   final Ref ref;
 
   void _init() {
