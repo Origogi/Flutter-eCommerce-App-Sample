@@ -16,6 +16,7 @@ class LeaveReviewController extends StateNotifier<AsyncValue<void>> {
     required ProductID productId,
     required double rating,
     required String comment,
+    required void Function() onSuccess,
   }) async {
     final review = Review(
       rating: rating,
@@ -28,12 +29,16 @@ class LeaveReviewController extends StateNotifier<AsyncValue<void>> {
         reviewsService.submitReview(productId: productId, review: review));
     if (mounted) {
       state = newState;
+      if (state.hasError == false) {
+        onSuccess();
+      }
     }
   }
 }
 
 final leaveReviewControllerProvider =
-    StateNotifierProvider.autoDispose<LeaveReviewController, AsyncValue<void>>((ref) {
+    StateNotifierProvider.autoDispose<LeaveReviewController, AsyncValue<void>>(
+        (ref) {
   return LeaveReviewController(
       reviewsService: ref.watch(reviewsServiceProvider),
       currentDateBuilder: ref.watch(currentDateBuilderProvider));
