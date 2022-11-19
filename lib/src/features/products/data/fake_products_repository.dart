@@ -34,21 +34,16 @@ class FakeProductsRepository {
   }
 
   /// Update product rating
-  Future<void> updateProductRating({
-    required ProductID productId,
-    required double avgRating,
-    required int numRatings,
+  Future<void> setProduct({
+    required Product product
   }) async {
     await delay(addDelay);
     final products = _products.value;
-    final index = products.indexWhere((item) => item.id == productId);
+    final index = products.indexWhere((item) => item.id == product.id);
     if (index == -1) {
-      throw StateError('Product not found (id: $productId)'.hardcoded);
+      throw StateError('Product not found (id: ${product.id})'.hardcoded);
     }
-    products[index] = products[index].copyWith(
-      avgRating: avgRating,
-      numRatings: numRatings,
-    );
+    products[index] = product;
     _products.value = products;
   }
 
