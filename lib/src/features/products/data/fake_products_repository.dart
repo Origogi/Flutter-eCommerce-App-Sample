@@ -47,9 +47,7 @@ class FakeProductsRepository {
   }
 
   Future<List<Product>> searchProducts(String query) async {
-    assert(
-      _products.value.length <= 100
-    );
+    assert(_products.value.length <= 100);
 
     final products = await fetchProductsList();
 
@@ -89,4 +87,10 @@ final productProvider =
     StreamProvider.autoDispose.family<Product?, String>((ref, id) {
   final productsRepository = ref.watch(productsRepositoryProvider);
   return productsRepository.watchProduct(id);
+});
+
+final productsListSearchProvider = FutureProvider.autoDispose
+    .family<List<Product>, String>((ref, query) async {
+  final productsRepository = ref.watch(productsRepositoryProvider);
+  return productsRepository.searchProducts(query);
 });
