@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FakeProductsRepository {
   FakeProductsRepository({this.addDelay = true});
+
   final bool addDelay;
 
   /// Preload with the default list of products when the app starts
@@ -34,9 +35,7 @@ class FakeProductsRepository {
   }
 
   /// Update product rating
-  Future<void> setProduct({
-    required Product product
-  }) async {
+  Future<void> setProduct({required Product product}) async {
     await delay(addDelay);
     final products = _products.value;
     final index = products.indexWhere((item) => item.id == product.id);
@@ -45,6 +44,19 @@ class FakeProductsRepository {
     }
     products[index] = product;
     _products.value = products;
+  }
+
+  Future<List<Product>> searchProducts(String query) async {
+    assert(
+      _products.value.length <= 100
+    );
+
+    final products = await fetchProductsList();
+
+    return products
+        .where((product) =>
+            product.title.toLowerCase().contains(query.toLowerCase()))
+        .toList();
   }
 
   static Product? _getProduct(List<Product> products, String id) {
