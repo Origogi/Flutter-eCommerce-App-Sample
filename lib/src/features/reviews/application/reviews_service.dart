@@ -8,7 +8,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ReviewsService {
   ReviewsService(this.ref);
-
   final Ref ref;
 
   Future<void> submitReview({
@@ -45,7 +44,7 @@ class ReviewsService {
       avgRating: avgRating,
       numRatings: reviews.length,
     );
-    await ref.read(productsRepositoryProvider).setProduct(product: updated);
+    await ref.read(productsRepositoryProvider).setProduct(updated);
   }
 
   double _avgReviewScore(List<Review> reviews) {

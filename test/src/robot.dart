@@ -8,7 +8,6 @@ import 'package:ecommerce_app/src/features/cart/data/remote/remote_cart_reposito
 import 'package:ecommerce_app/src/features/orders/data/fake_orders_repository.dart';
 import 'package:ecommerce_app/src/features/products/data/fake_products_repository.dart';
 import 'package:ecommerce_app/src/features/products/presentation/home_app_bar/more_menu_button.dart';
-import 'package:ecommerce_app/src/features/reviews/data/fake_purchases_repository.dart';
 import 'package:ecommerce_app/src/features/reviews/data/fake_reviews_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -45,7 +44,6 @@ class Robot {
     final localCartRepository = FakeLocalCartRepository(addDelay: false);
     final remoteCartRepository = FakeRemoteCartRepository(addDelay: false);
     final ordersRepository = FakeOrdersRepository(addDelay: false);
-    final purchasesRepository = FakePurchasesRepository(addDelay: false);
     final reviewsRepository = FakeReviewsRepository(addDelay: false);
     // * Create ProviderContainer with any required overrides
     final container = ProviderContainer(
@@ -55,7 +53,6 @@ class Robot {
         localCartRepositoryProvider.overrideWithValue(localCartRepository),
         remoteCartRepositoryProvider.overrideWithValue(remoteCartRepository),
         ordersRepositoryProvider.overrideWithValue(ordersRepository),
-        purchasesRepositoryProvider.overrideWithValue(purchasesRepository),
         reviewsRepositoryProvider.overrideWithValue(reviewsRepository),
       ],
     );

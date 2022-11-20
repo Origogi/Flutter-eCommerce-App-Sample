@@ -50,9 +50,8 @@ class _ProductsSearchTextFieldState
                   )
                 : null,
           ),
-          onChanged: (query) {
-            ref.read(productsSearchQueryStateProvider.notifier).state = query;
-          },
+          onChanged: (text) =>
+              ref.read(productsSearchQueryStateProvider.notifier).state = text,
         );
       },
     );

@@ -2,15 +2,12 @@ import 'dart:async';
 
 import 'package:ecommerce_app/src/constants/test_products.dart';
 import 'package:ecommerce_app/src/features/products/domain/product.dart';
-import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
 import 'package:ecommerce_app/src/utils/delay.dart';
 import 'package:ecommerce_app/src/utils/in_memory_store.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FakeProductsRepository {
   FakeProductsRepository({this.addDelay = true});
-
   final bool addDelay;
 
   /// Preload with the default list of products when the app starts
@@ -36,24 +33,32 @@ class FakeProductsRepository {
     return watchProductsList().map((products) => _getProduct(products, id));
   }
 
-  /// Update product rating
-  Future<void> setProduct({required Product product}) async {
+  /// Update product or add a new one
+  Future<void> setProduct(Product product) async {
     await delay(addDelay);
     final products = _products.value;
-    final index = products.indexWhere((item) => item.id == product.id);
+    final index = products.indexWhere((p) => p.id == product.id);
     if (index == -1) {
-      throw StateError('Product not found (id: ${product.id})'.hardcoded);
+      // if not found, add as a new product
+      products.add(product);
+    } else {
+      // else, overwrite previous product
+      products[index] = product;
     }
-    products[index] = product;
     _products.value = products;
   }
 
+  /// Search for products where the title contains the search query
   Future<List<Product>> searchProducts(String query) async {
-    assert(_products.value.length <= 100);
-
-    final products = await fetchProductsList();
-
-    return products
+    assert(
+      _products.value.length <= 100,
+      'Client-side search should only be performed if the number of products is small. '
+      'Consider doing server-side search for larger datasets.',
+    );
+    // Get all products
+    final productsList = await fetchProductsList();
+    // Match all products where the title contains the query
+    return productsList
         .where((product) =>
             product.title.toLowerCase().contains(query.toLowerCase()))
         .toList();
@@ -94,18 +99,11 @@ final productProvider =
 final productsListSearchProvider = FutureProvider.autoDispose
     .family<List<Product>, String>((ref, query) async {
   final link = ref.keepAlive();
-
-  ref.onDispose(() {
-    debugPrint('disposed $query');
-  });
-
-  ref.onCancel(() => debugPrint('cancel $query'));
-
-  Timer(const Duration(seconds: 3), () {
+  // * keep previous search results in memory for 60 seconds
+  final timer = Timer(const Duration(seconds: 60), () {
     link.close();
   });
-  await Future.delayed(const Duration(milliseconds: 500));
-
+  ref.onDispose(() => timer.cancel());
   final productsRepository = ref.watch(productsRepositoryProvider);
   return productsRepository.searchProducts(query);
 });

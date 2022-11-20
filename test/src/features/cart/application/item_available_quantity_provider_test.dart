@@ -7,10 +7,10 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('itemAvailableQuantityProvider', () {
     ProviderContainer makeProviderContainer({
-      required AsyncValue<Cart> cart,
+      required Stream<Cart> cart,
     }) {
       final container = ProviderContainer(overrides: [
-        cartProvider.overrideWithValue(cart),
+        cartProvider.overrideWith((ref) => cart),
       ]);
       addTearDown(container.dispose);
       return container;
@@ -18,7 +18,7 @@ void main() {
 
     test('loading cart', () async {
       final container = makeProviderContainer(
-        cart: const AsyncLoading(),
+        cart: const Stream.empty(),
       );
       final availableQuantity =
           container.read(itemAvailableQuantityProvider(kTestProducts[0]));
@@ -27,8 +27,9 @@ void main() {
 
     test('empty cart', () async {
       final container = makeProviderContainer(
-        cart: const AsyncData(Cart()),
+        cart: Stream.value(const Cart()),
       );
+      await container.read(cartProvider.future);
       final availableQuantity =
           container.read(itemAvailableQuantityProvider(kTestProducts[0]));
       expect(availableQuantity, 5);
@@ -36,8 +37,9 @@ void main() {
 
     test('product with quantity = 1', () async {
       final container = makeProviderContainer(
-        cart: const AsyncData(Cart({'1': 1})),
+        cart: Stream.value(const Cart({'1': 1})),
       );
+      await container.read(cartProvider.future);
       final availableQuantity =
           container.read(itemAvailableQuantityProvider(kTestProducts[0]));
       expect(availableQuantity, 4);
@@ -45,8 +47,9 @@ void main() {
 
     test('product with quantity = 5', () async {
       final container = makeProviderContainer(
-        cart: const AsyncData(Cart({'1': 5})),
+        cart: Stream.value(const Cart({'1': 5})),
       );
+      await container.read(cartProvider.future);
       final availableQuantity =
           container.read(itemAvailableQuantityProvider(kTestProducts[0]));
       expect(availableQuantity, 0);
@@ -54,8 +57,9 @@ void main() {
 
     test('product with quantity = 10', () async {
       final container = makeProviderContainer(
-        cart: const AsyncData(Cart({'1': 10})),
+        cart: Stream.value(const Cart({'1': 10})),
       );
+      await container.read(cartProvider.future);
       final availableQuantity =
           container.read(itemAvailableQuantityProvider(kTestProducts[0]));
       expect(availableQuantity, 0);

@@ -1,4 +1,3 @@
-import 'package:ecommerce_app/src/common_widgets/alert_dialogs.dart';
 import 'package:ecommerce_app/src/common_widgets/async_value_widget.dart';
 import 'package:ecommerce_app/src/constants/breakpoints.dart';
 import 'package:ecommerce_app/src/features/products/domain/product.dart';
@@ -17,7 +16,6 @@ import 'package:go_router/go_router.dart';
 
 class LeaveReviewScreen extends StatelessWidget {
   const LeaveReviewScreen({super.key, required this.productId});
-
   final ProductID productId;
 
   @override
@@ -32,12 +30,11 @@ class LeaveReviewScreen extends StatelessWidget {
         child: Consumer(
           builder: (context, ref, child) {
             final reviewValue = ref.watch(userReviewFutureProvider(productId));
-            return AsyncValueWidget(
-                value: reviewValue,
-                data: (review) => LeaveReviewForm(
-                      productId: productId,
-                      review: review,
-                    ));
+            return AsyncValueWidget<Review?>(
+              value: reviewValue,
+              data: (review) =>
+                  LeaveReviewForm(productId: productId, review: review),
+            );
           },
         ),
       ),
@@ -47,7 +44,6 @@ class LeaveReviewScreen extends StatelessWidget {
 
 class LeaveReviewForm extends ConsumerStatefulWidget {
   const LeaveReviewForm({super.key, required this.productId, this.review});
-
   final ProductID productId;
   final Review? review;
 
@@ -82,12 +78,11 @@ class _LeaveReviewFormState extends ConsumerState<LeaveReviewForm> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<AsyncValue>(leaveReviewControllerProvider, (_, state) {
-      state.showAlertDialogOnError(context);
-    });
-
+    ref.listen<AsyncValue>(
+      leaveReviewControllerProvider,
+      (_, state) => state.showAlertDialogOnError(context),
+    );
     final state = ref.watch(leaveReviewControllerProvider);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -121,14 +116,14 @@ class _LeaveReviewFormState extends ConsumerState<LeaveReviewForm> {
           isLoading: state.isLoading,
           onPressed: state.isLoading || _rating == 0
               ? null
-              : () => ref
-                  .read(leaveReviewControllerProvider.notifier)
-                  .submitReview(
-                      previewReview: widget.review,
-                      productId: widget.productId,
-                      rating: _rating,
-                      comment: _controller.text,
-                      onSuccess: context.pop),
+              : () =>
+                  ref.read(leaveReviewControllerProvider.notifier).submitReview(
+                        previousReview: widget.review,
+                        productId: widget.productId,
+                        rating: _rating,
+                        comment: _controller.text,
+                        onSuccess: context.pop,
+                      ),
         )
       ],
     );

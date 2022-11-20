@@ -3,9 +3,7 @@ import 'package:ecommerce_app/src/features/cart/data/remote/remote_cart_reposito
 import 'package:ecommerce_app/src/features/cart/domain/cart.dart';
 import 'package:ecommerce_app/src/features/orders/data/fake_orders_repository.dart';
 import 'package:ecommerce_app/src/features/orders/domain/order.dart';
-import 'package:ecommerce_app/src/features/reviews/domain/purchase.dart';
 import 'package:ecommerce_app/src/features/products/data/fake_products_repository.dart';
-import 'package:ecommerce_app/src/features/reviews/data/fake_purchases_repository.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
 import 'package:ecommerce_app/src/utils/current_date_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,7 +23,6 @@ class FakeCheckoutService {
     final authRepository = ref.read(authRepositoryProvider);
     final remoteCartRepository = ref.read(remoteCartRepositoryProvider);
     final ordersRepository = ref.read(ordersRepositoryProvider);
-    final purchasesRepository = ref.read(purchasesRepositoryProvider);
     final currentDateBuilder = ref.read(currentDateBuilderProvider);
     // * Assertion operator is ok here since this method is only called from
     // * a place where the user is signed in
@@ -51,14 +48,6 @@ class FakeCheckoutService {
       await ordersRepository.addOrder(uid, order);
       // 4. Empty the cart
       await remoteCartRepository.setCart(uid, const Cart());
-      // 5. Update reviews repository with purchase order data
-      for (var entry in cart.items.entries) {
-        await purchasesRepository.addPurchase(
-          productId: entry.key,
-          uid: uid,
-          purchase: Purchase(orderId: orderId, orderDate: orderDate),
-        );
-      }
     } else {
       throw StateError('Can\'t place an order if the cart is empty'.hardcoded);
     }
