@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:ecommerce_app/src/constants/test_products.dart';
 import 'package:ecommerce_app/src/features/products/domain/product.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
 import 'package:ecommerce_app/src/utils/delay.dart';
 import 'package:ecommerce_app/src/utils/in_memory_store.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FakeProductsRepository {
@@ -22,7 +25,6 @@ class FakeProductsRepository {
   }
 
   Future<List<Product>> fetchProductsList() async {
-    await delay(addDelay);
     return Future.value(_products.value);
   }
 
@@ -91,6 +93,19 @@ final productProvider =
 
 final productsListSearchProvider = FutureProvider.autoDispose
     .family<List<Product>, String>((ref, query) async {
+  final link = ref.keepAlive();
+
+  ref.onDispose(() {
+    debugPrint('disposed $query');
+  });
+
+  ref.onCancel(() => debugPrint('cancel $query'));
+
+  Timer(const Duration(seconds: 3), () {
+    link.close();
+  });
+  await Future.delayed(const Duration(milliseconds: 500));
+
   final productsRepository = ref.watch(productsRepositoryProvider);
   return productsRepository.searchProducts(query);
 });
