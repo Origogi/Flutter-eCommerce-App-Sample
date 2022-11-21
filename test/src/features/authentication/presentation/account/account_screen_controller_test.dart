@@ -12,13 +12,12 @@ void main() {
   setUp(() {
     authRepository = MockAuthRepository();
     controller = AccountScreenController(
-      authRepository: authRepository,
     );
   });
   group('AccountScreenController', () {
     test('initial state is AsyncValue.data', () {
       verifyNever(authRepository.signOut);
-      expect(controller.debugState, const AsyncData<void>(null));
+      expect(controller.state, const AsyncData<void>(null));
     });
 
     test('signOut success', () async {
