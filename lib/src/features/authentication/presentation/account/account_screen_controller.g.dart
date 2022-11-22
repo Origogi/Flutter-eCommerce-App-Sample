@@ -30,21 +30,90 @@ class _SystemHash {
 }
 
 String $AccountScreenControllerHash() =>
-    r'214c588739a1c695e32a9a386805299d46a9625a';
+    r'57875550aaf3a0905bf2353f42ff24500446cc5b';
 
 /// See also [AccountScreenController].
-final accountScreenControllerProvider =
-    AutoDisposeAsyncNotifierProvider<AccountScreenController, void>(
-  AccountScreenController.new,
-  name: r'accountScreenControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : $AccountScreenControllerHash,
-);
+class AccountScreenControllerProvider
+    extends AutoDisposeAsyncNotifierProviderImpl<AccountScreenController,
+        void> {
+  AccountScreenControllerProvider(
+    this.name,
+  ) : super(
+          () => AccountScreenController()..name = name,
+          from: accountScreenControllerProvider,
+          name: r'accountScreenControllerProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : $AccountScreenControllerHash,
+        );
+
+  final String name;
+
+  @override
+  bool operator ==(Object other) {
+    return other is AccountScreenControllerProvider && other.name == name;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, name.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+
+  @override
+  FutureOr<void> runNotifierBuild(
+    covariant _$AccountScreenController notifier,
+  ) {
+    return notifier.build(
+      name,
+    );
+  }
+}
+
 typedef AccountScreenControllerRef = AutoDisposeAsyncNotifierProviderRef<void>;
 
-abstract class _$AccountScreenController
-    extends AutoDisposeAsyncNotifier<void> {
+/// See also [AccountScreenController].
+final accountScreenControllerProvider = AccountScreenControllerFamily();
+
+class AccountScreenControllerFamily extends Family<AsyncValue<void>> {
+  AccountScreenControllerFamily();
+
+  AccountScreenControllerProvider call(
+    String name,
+  ) {
+    return AccountScreenControllerProvider(
+      name,
+    );
+  }
+
   @override
-  FutureOr<void> build();
+  AutoDisposeAsyncNotifierProviderImpl<AccountScreenController, void>
+      getProviderOverride(
+    covariant AccountScreenControllerProvider provider,
+  ) {
+    return call(
+      provider.name,
+    );
+  }
+
+  @override
+  List<ProviderOrFamily>? get allTransitiveDependencies => null;
+
+  @override
+  List<ProviderOrFamily>? get dependencies => null;
+
+  @override
+  String? get name => r'accountScreenControllerProvider';
+}
+
+abstract class _$AccountScreenController
+    extends BuildlessAutoDisposeAsyncNotifier<void> {
+  late final String name;
+
+  FutureOr<void> build(
+    String name,
+  );
 }

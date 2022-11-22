@@ -16,10 +16,10 @@ class AccountScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen<AsyncValue>(
-      accountScreenControllerProvider,
+      accountScreenControllerProvider('name'),
       (_, state) => state.showAlertDialogOnError(context),
     );
-    final state = ref.watch(accountScreenControllerProvider);
+    final state = ref.watch(accountScreenControllerProvider('name'));
     return Scaffold(
       appBar: AppBar(
         title: state.isLoading
@@ -39,7 +39,7 @@ class AccountScreen extends ConsumerWidget {
                     );
                     if (logout == true) {
                       ref
-                          .read(accountScreenControllerProvider.notifier)
+                          .read(accountScreenControllerProvider('name').notifier)
                           .signOut();
                     }
                   },

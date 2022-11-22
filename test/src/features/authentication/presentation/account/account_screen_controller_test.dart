@@ -31,7 +31,7 @@ void main() {
       final listener = Listener<AsyncValue<void>>();
       // listen to the provider and call [listener] whenever its value changes
       container.listen(
-        accountScreenControllerProvider,
+        accountScreenControllerProvider('name'),
         listener,
         fireImmediately: true,
       );
@@ -57,7 +57,7 @@ void main() {
       final listener = Listener<AsyncValue<void>>();
       // listen to the provider and call [listener] whenever its value changes
       container.listen(
-        accountScreenControllerProvider,
+        accountScreenControllerProvider('name'),
         listener,
         fireImmediately: true,
       );
@@ -67,7 +67,7 @@ void main() {
       verify(() => listener(null, data));
       // run
       final controller =
-          container.read(accountScreenControllerProvider.notifier);
+          container.read(        accountScreenControllerProvider('name').notifier);
       await controller.signOut();
       // verify
       verifyInOrder([
@@ -93,7 +93,7 @@ void main() {
       final listener = Listener<AsyncValue<void>>();
       // listen to the provider and call [listener] whenever its value changes
       container.listen(
-        accountScreenControllerProvider,
+        accountScreenControllerProvider('name'),
         listener,
         fireImmediately: true,
       );
@@ -102,7 +102,7 @@ void main() {
       verify(() => listener(null, data));
       // run
       final controller =
-          container.read(accountScreenControllerProvider.notifier);
+          container.read(accountScreenControllerProvider('name').notifier);
       await controller.signOut();
       // verify
       verifyInOrder([

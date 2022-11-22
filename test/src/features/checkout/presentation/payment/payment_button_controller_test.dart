@@ -65,10 +65,12 @@ void main() {
         listener,
         fireImmediately: true,
       );
+
       const data = AsyncData<void>(null);
       verify(() => listener(null, data));
       // run
       await controller.pay();
+
       // verify
       verifyInOrder([
             () => listener(data, any(that: isA<AsyncLoading>())),
